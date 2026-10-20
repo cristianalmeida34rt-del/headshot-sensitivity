@@ -170,6 +170,8 @@ function compareVersions(current, latest) {
 }
 
 async function checkForUpdates() {
+  alert("Verificação de atualização iniciada!");
+  
   const notice=document.getElementById("updateNotice");
   try {
     const response=await fetch(VERSION_URL+"?t="+Date.now(),{cache:"no-store"});
