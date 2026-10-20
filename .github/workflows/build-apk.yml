@@ -149,4 +149,4 @@ jobs:
         with:
           name: Headshot-Sensitivity-APK
           path: android-wrapper/app/build/outputs/apk/debug/app-debug.apk
-          if-no-files-found: errora
+          if-no-files-found: error
