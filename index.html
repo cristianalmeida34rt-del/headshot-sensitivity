@@ -180,6 +180,12 @@ async function checkForUpdates() {
     
     if(!response.ok)throw new Error("Arquivo de versão indisponível");
     const data=await response.json();
+    alert(
+      
+  "Versão instalada: " + APP_VERSION +
+  "\nVersão no servidor: " + data.version
+);
+    
     if(!data.version||!/^\d+(\.\d+)*$/.test(String(data.version)))throw new Error("Versão inválida");
 
     if(compareVersions(APP_VERSION,data.version)<0) {
