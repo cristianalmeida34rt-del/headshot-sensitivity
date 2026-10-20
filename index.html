@@ -188,7 +188,7 @@ async function checkForUpdates() {
     
     if(!data.version||!/^\d+(\.\d+)*$/.test(String(data.version)))throw new Error("Versão inválida");
 
-    if(compareVersions(APP_VERSION,data.version)<0) {
+    if(compareVersions(APP_VERSION,data.version)>0) {
       latestUpdateUrl=typeof data.downloadUrl==="string"&&data.downloadUrl.startsWith("https://")?data.downloadUrl:DEFAULT_DOWNLOAD_URL;
       document.getElementById("updateVersion").textContent="VERSÃO "+data.version;
       document.getElementById("updateDescription").textContent=data.notes||"Uma nova versão do Headshot Sensitivity está disponível.";
