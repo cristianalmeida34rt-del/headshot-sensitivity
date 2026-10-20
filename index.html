@@ -2,47 +2,147 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080812">
 <title>Headshot Sensitivity</title>
+
 <style>
 *{box-sizing:border-box}
-:root{color-scheme:dark;--bg:#080812;--card:#11111f;--border:#292744;--purple:#8b5cff;--blue:#42a5ff;--muted:#aaa8c9}
-body{margin:0;min-height:100vh;background:var(--bg);color:white;font-family:Arial,sans-serif}
-header{padding:24px 16px 18px;text-align:center;background:linear-gradient(135deg,#10102a,#19103b);border-bottom:1px solid #633cff}
+:root{
+  color-scheme:dark;
+  --bg:#080812;
+  --card:#11111f;
+  --border:#292744;
+  --purple:#8b5cff;
+  --blue:#42a5ff;
+  --muted:#aaa8c9;
+}
+body{
+  margin:0;min-height:100vh;background:var(--bg);
+  color:#fff;font-family:Arial,sans-serif
+}
+header{
+  padding:24px 16px 18px;text-align:center;
+  background:linear-gradient(135deg,#10102a,#19103b);
+  border-bottom:1px solid #633cff
+}
 .logo{font-size:23px;font-weight:900;letter-spacing:1px}
 .logo span{color:var(--purple)}
 header p{color:var(--muted);font-size:13px}
-main{width:min(100% - 24px,520px);margin:20px auto}
-.update-notice{display:none;background:linear-gradient(135deg,#211449,#101b39);border:1px solid var(--purple);border-radius:16px;padding:17px;margin-bottom:18px;box-shadow:0 8px 25px #0005}
-.update-notice h2{margin:0 0 10px;font-size:18px;color:#c8b6ff}
-.update-notice p{color:#d4d0eb;font-size:13px;line-height:1.6;overflow-wrap:anywhere}
-.update-version{display:inline-block;color:white;background:#4934ff55;border:1px solid var(--purple);border-radius:20px;padding:5px 10px;font-size:12px;margin-bottom:8px}
-.update-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
-.update-actions button{min-width:0;padding:12px 8px;border-radius:10px;font-size:12px;font-weight:bold}
-.update-download{background:linear-gradient(100deg,#4934ff,#9a38ff);border:0;color:white}
-.update-later{background:#11111f;border:1px solid #51476f;color:#ddd5ff}
-.update-message{font-size:11px!important;color:#aaa8c9!important;margin-bottom:0}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:18px}
-.tab{margin:0;padding:13px 8px;border:1px solid #393456;border-radius:12px;background:#11111f;color:#aaa8c9;font-size:13px}
-.tab.active{color:white;border-color:#8b5cff;background:linear-gradient(110deg,#34217d,#231344)}
-.page{display:none}
-.page.active{display:block}
-.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 8px 30px #0005}
+main{width:min(100% - 24px,560px);margin:20px auto}
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:18px;padding:18px;margin-bottom:16px;
+  box-shadow:0 8px 30px #0005
+}
 h2{font-size:18px;margin:0 0 18px}
 h3{font-size:15px;margin:0 0 10px}
-label{display:block;margin:15px 0 8px;color:#c8c5e5;font-size:13px}
-select,input{width:100%;padding:13px;color:white;background:#090916;border:1px solid #393456;border-radius:10px;outline:none;font-size:15px}
+label{
+  display:block;margin:15px 0 8px;
+  color:#c8c5e5;font-size:13px
+}
+select,input{
+  width:100%;padding:13px;color:white;background:#090916;
+  border:1px solid #393456;border-radius:10px;
+  outline:none;font-size:15px
+}
 select:focus,input:focus{border-color:#8054ff}
 button{font-family:inherit;cursor:pointer}
-.action{width:100%;padding:15px;border:0;border-radius:11px;margin-top:17px;color:white;font-size:14px;font-weight:bold;background:linear-gradient(100deg,#4934ff,#9a38ff)}
 button:active{transform:scale(.98)}
-.result{display:none;margin-top:20px}
-.stat{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid var(--border)}
+.action{
+  width:100%;padding:15px;border:0;border-radius:11px;
+  margin-top:17px;color:white;font-size:14px;font-weight:bold;
+  background:linear-gradient(100deg,#4934ff,#9a38ff)
+}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:18px}
+.tab{
+  padding:13px 8px;border:1px solid #393456;border-radius:12px;
+  background:#11111f;color:#aaa8c9;font-size:13px
+}
+.tab.active{
+  color:white;border-color:#8b5cff;
+  background:linear-gradient(110deg,#34217d,#231344)
+}
+.page{display:none}
+.page.active{display:block}
+.note{color:#9996b8;font-size:12px;line-height:1.6}
+.tag{
+  display:inline-block;padding:5px 9px;margin-bottom:12px;
+  border:1px solid #4934ff;border-radius:20px;
+  color:#b9a5ff;font-size:11px
+}
+.stat{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding:13px 0;border-bottom:1px solid var(--border)
+}
 .stat span{color:#bbb8d7;font-size:13px}
 .stat strong{color:#b49bff;font-size:19px}
-.tag{display:inline-block;padding:5px 9px;margin-bottom:12px;border:1px solid #4934ff;border-radius:20px;color:#b9a5ff;font-size:11px}
-.note{color:#9996b8;font-size:12px;line-height:1.6}
+.result{display:none;margin-top:20px}
+
+/* Atualização */
+.update-notice{
+  display:none;background:linear-gradient(135deg,#211449,#101b39);
+  border:1px solid var(--purple);border-radius:16px;
+  padding:17px;margin-bottom:18px
+}
+.update-notice h2{margin:8px 0;font-size:18px;color:#c8b6ff}
+.update-notice p{color:#d4d0eb;font-size:13px;line-height:1.6}
+.update-version{
+  display:inline-block;background:#4934ff55;
+  border:1px solid var(--purple);border-radius:20px;
+  padding:5px 10px;font-size:12px
+}
+.update-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.update-actions button{
+  padding:12px 8px;border-radius:10px;font-size:12px;font-weight:bold
+}
+.update-download{background:linear-gradient(100deg,#4934ff,#9a38ff);border:0;color:white}
+.update-later{background:#11111f;border:1px solid #51476f;color:#ddd5ff}
+
+/* Seleção de armas */
+.weapon-heading{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:8px;margin-bottom:12px
+}
+.weapon-count{font-size:11px;color:#aaa8c9}
+.weapon-filter{margin:0 0 12px}
+.weapon-search{margin-bottom:12px}
+.weapon-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px
+}
+.weapon{
+  min-width:0;min-height:94px;padding:10px 5px;
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:7px;
+  background:#0b0b18;border:1px solid #292744;
+  border-radius:12px;color:#ddd8ff
+}
+.weapon.selected{
+  background:linear-gradient(145deg,#302064,#11152b);
+  border:1px solid #9b73ff;
+  box-shadow:0 0 14px #754aff33
+}
+.weapon-icon{
+  font-size:26px;line-height:1
+}
+.weapon-name{
+  font-size:11px;text-align:center;line-height:1.3;
+  overflow-wrap:anywhere
+}
+.selected-weapon{
+  display:flex;align-items:center;gap:12px;
+  background:#17132a;border:1px solid #4934ff;
+  border-radius:12px;padding:12px;margin-top:13px
+}
+.selected-weapon .weapon-icon{font-size:32px}
+.selected-weapon small{display:block;color:#aaa8c9;margin-top:4px}
+.no-weapons{
+  display:none;color:#aaa8c9;font-size:13px;
+  text-align:center;padding:20px
+}
+
+/* Diagnóstico */
 .status{display:flex;align-items:center;gap:8px;font-size:12px;color:#aaa8c9;margin-bottom:15px}
 .dot{width:9px;height:9px;border-radius:50%;background:#77748f;flex-shrink:0}
 .dot.ok{background:#35db9a}
@@ -58,330 +158,248 @@ button:active{transform:scale(.98)}
 .green{color:#35db9a}
 .yellow{color:#ffc857}
 .meter{height:6px;background:#292744;border-radius:10px;overflow:hidden;margin-top:12px}
-.meter-fill{height:100%;width:0;border-radius:10px;background:linear-gradient(90deg,#4934ff,#9a38ff);transition:width .35s ease}
-.diagnostic-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.secondary{width:100%;padding:12px 8px;border:1px solid #4934ff;border-radius:10px;color:white;background:#17132a;font-size:12px;font-weight:bold}
+.meter-fill{height:100%;width:0;border-radius:10px;background:linear-gradient(90deg,#4934ff,#9a38ff);transition:width .35s}
+.diagnostic-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.secondary{
+  width:100%;padding:12px 8px;border:1px solid #4934ff;
+  border-radius:10px;color:white;background:#17132a;
+  font-size:12px;font-weight:bold
+}
 footer{text-align:center;padding:20px;color:#77748f;font-size:12px}
+@media(max-width:350px){
+  .weapon-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 </style>
 </head>
+
 <body>
 <header>
-<div class="logo">HEADSHOT <span>SENSITIVITY</span></div>
-<p>Seu jogo. Sua configuração. Seu estilo.</p>
+  <div class="logo">HEADSHOT <span>SENSITIVITY</span></div>
+  <p>Seu jogo. Sua configuração. Seu estilo.</p>
 </header>
+
 <main>
 
-<section class="update-notice" id="updateNotice" role="status" aria-live="polite">
-<div class="update-version" id="updateVersion">NOVA VERSÃO</div>
-<h2>🚀 Atualização disponível!</h2>
-<p id="updateDescription">Uma nova versão do Headshot Sensitivity está disponível.</p>
-<div class="update-actions">
-<button class="update-download" type="button" onclick="openUpdateDownload()">⬇ ATUALIZAR AGORA</button>
-<button class="update-later" type="button" onclick="dismissUpdate()">MAIS TARDE</button>
-</div>
-<p class="update-message">O download será feito pela página de lançamentos.</p>
+<section class="update-notice" id="updateNotice" role="status">
+  <div class="update-version" id="updateVersion">NOVA VERSÃO</div>
+  <h2>🚀 Atualização disponível!</h2>
+  <p id="updateDescription">Uma nova versão está disponível.</p>
+  <div class="update-actions">
+    <button class="update-download" onclick="openUpdateDownload()">⬇ ATUALIZAR AGORA</button>
+    <button class="update-later" onclick="dismissUpdate()">MAIS TARDE</button>
+  </div>
+  <p>O download será feito pela página de lançamentos do GitHub.</p>
 </section>
 
-<nav class="tabs" aria-label="Abas do aplicativo">
-<button class="tab active" id="tabSensitivity" type="button" onclick="showPage('sensitivity')">🎯 Sensibilidade</button>
-<button class="tab" id="tabDiagnostics" type="button" onclick="showPage('diagnostics')">📊 Diagnóstico</button>
+<nav class="tabs">
+  <button class="tab active" id="tabSensitivity" onclick="showPage('sensitivity')">🎯 Sensibilidade</button>
+  <button class="tab" id="tabDiagnostics" onclick="showPage('diagnostics')">📊 Diagnóstico</button>
 </nav>
 
 <div class="page active" id="sensitivityPage">
+
 <section class="card">
-<h2>⚡ Gerador de Sensibilidade</h2>
-<label for="brand">Marca do celular</label>
-<select id="brand">
-<option>Xiaomi / Redmi / POCO</option><option>Samsung</option><option>Motorola</option><option>Realme</option><option>Infinix</option><option>TECNO</option><option>Apple iPhone</option><option>Outra marca</option>
-</select>
-<label for="model">Modelo do celular</label>
-<input id="model" placeholder="Ex.: Redmi Note 14 4G">
-<label for="style">Estilo de jogo</label>
-<select id="style">
-<option value="balanced">Equilibrado</option><option value="rush">Agressivo / Rush</option><option value="precision">Precisão</option>
-</select>
-<label for="screen">Taxa de atualização da tela</label>
-<select id="screen">
-<option value="60">60 Hz</option><option value="90">90 Hz</option><option value="120">120 Hz</option><option value="144">144 Hz</option><option value="unknown">Não sei</option>
-</select>
-<label for="control">Estilo de controle</label>
-<select id="control">
-<option value="2">2 dedos</option><option value="3">3 dedos</option><option value="4">4 dedos</option><option value="5">5 dedos ou mais</option>
-</select>
-<button class="action" type="button" onclick="generate()">GERAR MINHA SENSIBILIDADE</button>
-<div class="result" id="result">
-<h2>🎯 Sua configuração</h2>
-<div class="tag">NOVA COMBINAÇÃO GERADA</div>
-<div id="stats"></div>
-<button class="action" type="button" onclick="copyResult()">COPIAR CONFIGURAÇÃO</button>
-<p class="note">Estas configurações são sugestões experimentais. O aplicativo não modifica automaticamente o jogo nem o DPI. O DPI mostrado é apenas uma sugestão, não uma alteração do sistema.</p>
-</div>
+  <h2>⚡ Gerador de Sensibilidade</h2>
+
+  <label for="brand">Marca do celular</label>
+  <select id="brand">
+    <option>Xiaomi / Redmi / POCO</option>
+    <option>Samsung</option>
+    <option>Motorola</option>
+    <option>Realme</option>
+    <option>Infinix</option>
+    <option>TECNO</option>
+    <option>Apple iPhone</option>
+    <option>Outra marca</option>
+  </select>
+
+  <label for="model">Modelo do celular</label>
+  <input id="model" placeholder="Ex.: Redmi Note 14 4G">
+
+  <label for="style">Estilo de jogo</label>
+  <select id="style">
+    <option value="balanced">Equilibrado</option>
+    <option value="rush">Agressivo / Rush</option>
+    <option value="precision">Precisão</option>
+  </select>
+
+  <label for="screen">Taxa de atualização da tela</label>
+  <select id="screen">
+    <option value="60">60 Hz</option>
+    <option value="90">90 Hz</option>
+    <option value="120">120 Hz</option>
+    <option value="144">144 Hz</option>
+    <option value="unknown">Não sei</option>
+  </select>
+
+  <label for="control">Estilo de controle</label>
+  <select id="control">
+    <option value="2">2 dedos</option>
+    <option value="3">3 dedos</option>
+    <option value="4">4 dedos</option>
+    <option value="5">5 dedos ou mais</option>
+  </select>
 </section>
+
 <section class="card">
-<h2>💎 Sobre o aplicativo</h2>
-<p class="note">O Headshot Sensitivity gera sugestões com base nas opções escolhidas. As combinações são criadas no aparelho.</p>
+  <div class="weapon-heading">
+    <h2 style="margin:0">🔫 Escolha sua arma</h2>
+    <span class="weapon-count" id="weaponCount"></span>
+  </div>
+
+  <p class="note">Toque em uma arma para gerar uma sugestão específica para ela.</p>
+
+  <label for="weaponCategory">Categoria de armas</label>
+  <select id="weaponCategory" class="weapon-filter">
+    <option value="Todas">Todas as armas</option>
+    <option value="Rifles de assalto">Rifles de assalto</option>
+    <option value="Submetralhadoras">Submetralhadoras</option>
+    <option value="Escopetas">Escopetas</option>
+    <option value="Snipers e atiradores">Snipers e atiradores</option>
+    <option value="Pistolas">Pistolas</option>
+    <option value="Metralhadoras">Metralhadoras</option>
+    <option value="Armas especiais">Armas especiais</option>
+    <option value="Corpo a corpo">Corpo a corpo</option>
+  </select>
+
+  <input id="weaponSearch" class="weapon-search" placeholder="🔎 Pesquisar arma..." autocomplete="off">
+
+  <div class="weapon-grid" id="weaponGrid"></div>
+  <div class="no-weapons" id="noWeapons">Nenhuma arma encontrada.</div>
+
+  <div class="selected-weapon">
+    <div class="weapon-icon" id="selectedWeaponIcon">🔫</div>
+    <div>
+      <strong id="selectedWeaponName">MP40</strong>
+      <small id="selectedWeaponCategory">Submetralhadoras</small>
+    </div>
+  </div>
+
+  <button class="action" onclick="generate()">🎯 GERAR SENSIBILIDADE DA ARMA</button>
+
+  <div class="result" id="result">
+    <h2>🎯 Sua configuração</h2>
+    <div class="tag">COMBINAÇÃO PERSONALIZADA</div>
+    <div id="stats"></div>
+    <button class="action" onclick="copyResult()">📋 COPIAR CONFIGURAÇÃO</button>
+    <p class="note">
+      Os valores são sugestões experimentais. Teste no treinamento e ajuste conforme sua preferência.
+      O app não modifica automaticamente o Free Fire nem o DPI do Android.
+    </p>
+  </div>
+</section>
+
+<section class="card">
+  <h2>💎 Sobre o aplicativo</h2>
+  <p class="note">
+    O Headshot Sensitivity gera sugestões com base no aparelho, estilo de jogo,
+    controle e arma selecionada. Os ícones são representações visuais.
+    As configurações não garantem headshots e não alteram o jogo automaticamente.
+  </p>
 </section>
 </div>
 
 <div class="page" id="diagnosticsPage">
 <section class="card">
-<h2>📊 Diagnóstico do Celular</h2>
-<div class="status"><span class="dot" id="connectionDot"></span><span id="connectionStatus">Verificando conexão com Android...</span></div>
-<div class="monitor-grid">
-<div class="monitor"><div class="symbol blue">▤</div><div class="label">RAM total do sistema</div><div class="value blue" id="totalRam">—</div><div class="detail">Memória física detectada</div></div>
-<div class="monitor"><div class="symbol purple">▥</div><div class="label">RAM disponível</div><div class="value purple" id="availableRam">—</div><div class="detail">Memória disponível no sistema</div></div>
-<div class="monitor"><div class="symbol yellow">▰</div><div class="label">RAM usada pelo sistema</div><div class="value yellow" id="usedRam">—</div><div class="meter"><div class="meter-fill" id="ramMeter"></div></div><div class="detail" id="ramPercent">Aguardando dados</div></div>
-<div class="monitor"><div class="symbol green">▣</div><div class="label">RAM do aplicativo</div><div class="value green" id="appRam">—</div><div class="detail">Memória PSS do processo do app</div></div>
-<div class="monitor"><div class="symbol blue">◉</div><div class="label">CPU do aplicativo</div><div class="value blue" id="cpuValue">—</div><div class="meter"><div class="meter-fill" id="cpuMeter"></div></div><div class="detail">Uso estimado pelo processo do app</div></div>
-<div class="monitor"><div class="symbol purple">⚡</div><div class="label">FPS da interface do app</div><div class="value purple" id="fpsValue">—</div><div class="detail">Quadros por segundo do app, não do jogo</div></div>
-</div>
-<div class="diagnostic-actions">
-<button class="secondary" type="button" onclick="refreshDiagnostics()">↻ ATUALIZAR</button>
-<button class="secondary" type="button" onclick="toggleAutoRefresh()" id="autoButton">PAUSAR ATUALIZAÇÃO</button>
-</div>
-<p class="note" id="lastUpdate">As medições aparecerão quando a conexão Android estiver disponível.</p>
+  <h2>📊 Diagnóstico do Celular</h2>
+  <div class="status">
+    <span class="dot" id="connectionDot"></span>
+    <span id="connectionStatus">Verificando conexão com Android...</span>
+  </div>
+
+  <div class="monitor-grid">
+    <div class="monitor">
+      <div class="symbol blue">▤</div><div class="label">RAM total do sistema</div>
+      <div class="value blue" id="totalRam">—</div><div class="detail">Memória física detectada</div>
+    </div>
+    <div class="monitor">
+      <div class="symbol purple">▥</div><div class="label">RAM disponível</div>
+      <div class="value purple" id="availableRam">—</div><div class="detail">Memória disponível</div>
+    </div>
+    <div class="monitor">
+      <div class="symbol yellow">▰</div><div class="label">RAM usada pelo sistema</div>
+      <div class="value yellow" id="usedRam">—</div>
+      <div class="meter"><div class="meter-fill" id="ramMeter"></div></div>
+      <div class="detail" id="ramPercent">Aguardando dados</div>
+    </div>
+    <div class="monitor">
+      <div class="symbol green">▣</div><div class="label">RAM do aplicativo</div>
+      <div class="value green" id="appRam">—</div><div class="detail">Memória PSS do app</div>
+    </div>
+    <div class="monitor">
+      <div class="symbol blue">◉</div><div class="label">CPU do aplicativo</div>
+      <div class="value blue" id="cpuValue">—</div>
+      <div class="meter"><div class="meter-fill" id="cpuMeter"></div></div>
+      <div class="detail">Uso estimado pelo processo</div>
+    </div>
+    <div class="monitor">
+      <div class="symbol purple">⚡</div><div class="label">FPS da interface do app</div>
+      <div class="value purple" id="fpsValue">—</div><div class="detail">Não representa o FPS do jogo</div>
+    </div>
+  </div>
+
+  <div class="diagnostic-actions">
+    <button class="secondary" onclick="refreshDiagnostics()">↻ ATUALIZAR</button>
+    <button class="secondary" onclick="toggleAutoRefresh()" id="autoButton">PAUSAR ATUALIZAÇÃO</button>
+  </div>
+  <p class="note" id="lastUpdate">As medições aparecerão se a ponte Android estiver disponível.</p>
 </section>
+
 <section class="card">
-<h3>ℹ️ Sobre estas medições</h3>
-<p class="note">A RAM total, disponível e usada são dados do sistema Android. A RAM PSS e a CPU são do processo deste aplicativo. O FPS é medido pela interface do aplicativo usando Choreographer. Estes dados não medem diretamente o FPS nem a CPU do Free Fire.</p>
-<p class="note">A leitura funciona na versão APK Android com a ponte Java configurada. Se abrir este HTML num navegador comum, a ponte nativa não estará disponível.</p>
+  <h3>ℹ️ Sobre estas medições</h3>
+  <p class="note">
+    RAM, CPU e FPS dependem da implementação nativa da ponte Android no APK.
+    O FPS exibido é o da interface deste aplicativo, não o do Free Fire.
+    Abrir este HTML num navegador comum não disponibiliza automaticamente esses dados nativos.
+  </p>
 </section>
 </div>
 </main>
 
-<footer>HEADSHOT SENSITIVITY · VERSÃO 1.2</footer>
+<footer>HEADSHOT SENSITIVITY · VERSÃO 1.4</footer>
 
 <script>
-/* VERSAO INSTALADA */
-const APP_VERSION = "1.3";
-const VERSION_URL = "https://raw.githubusercontent.com/cristianalmeida34rt-del/headshot-sensitivity/main/version.json";
-const DEFAULT_DOWNLOAD_URL = "https://github.com/cristianalmeida34rt-del/headshot-sensitivity/releases/latest";
+"use strict";
+
+/* VERSÃO DO APLICATIVO */
+const APP_VERSION = "1.4";
+const VERSION_URL =
+  "https://raw.githubusercontent.com/cristianalmeida34rt-del/headshot-sensitivity/main/version.json";
+const DEFAULT_DOWNLOAD_URL =
+  "https://github.com/cristianalmeida34rt-del/headshot-sensitivity/releases/latest";
+
 let latestUpdateUrl = DEFAULT_DOWNLOAD_URL;
+let lastConfigKey = "";
+let autoRefresh = true;
+let refreshTimer = null;
+let diagnosticsBusy = false;
 
-function compareVersions(current, latest) {
-  const a = String(current).replace(/^v/i,"").split(".").map(Number);
-  const b = String(latest).replace(/^v/i,"").split(".").map(Number);
-  for (let i=0;i<Math.max(a.length,b.length);i++) {
-    const x=a[i]||0, y=b[i]||0;
-    if(y>x)return 1;
-    if(y<x)return -1;
-  }
-  return 0;
-}
+/*
+ * LISTA DE ARMAS
+ * Os símbolos são ícones visuais genéricos, não imagens oficiais.
+ */
+const weapons = [
+  // Rifles de assalto
+  {name:"AK",category:"Rifles de assalto",icon:"🎯",type:"rifle",adj:3},
+  {name:"AN94",category:"Rifles de assalto",icon:"🎯",type:"rifle",adj:2},
+  {name:"AUG",category:"Rifles de assalto",icon:"🎯",type:"rifle",adj:2},
+  {name:"FAMAS",category:"Rifles de assalto",icon:"🎯",type:"rifle",adj:3},
+  {name:"G36",category:"Rifles de assalto",icon:"🎯",type:"rifle",adj:2},
+  {name:"Groza",category:"Rifles de assalto",icon:"🎯",type:"rifle",adj:3},
+  {name:"Kingfisher",category:"Rifles de assalto",icon:"🎯",type:"rifle",adj:2},
+  {name:"M4A1",category:"Rifles de assalto",icon:"🎯",type:"rifle",adj:2},
+  {name:"M14",category:"Rifles de assalto",icon:"🎯",type:"marksman",adj:0},
+  {name:"SCAR",category:"Rifles de assalto",icon:"🎯",type:"rifle",adj:2},
+  {name:"XM8",category:"Rifles de assalto",icon:"🎯",type:"rifle",adj:2},
+  {name:"PARAFAL",category:"Rifles de assalto",icon:"🎯",type:"marksman",adj:0},
+  {name:"Plasma",category:"Rifles de assalto",icon:"⚡",type:"rifle",adj:1},
 
-async function checkForUpdates() {
-  alert("Verificação de atualização iniciada!");
-  
-  const notice=document.getElementById("updateNotice");
-  try {
-    const response=await fetch(VERSION_URL+"?t="+Date.now(),{cache:"no-store"});
-    
-    alert("Resposta do servidor: " + response.status);
-    
-    if(!response.ok)throw new Error("Arquivo de versão indisponível");
-    const data=await response.json();
-    alert(
-      
-  "Versão instalada: " + APP_VERSION +
-  "\nVersão no servidor: " + data.version
-);
-    
-    if(!data.version||!/^\d+(\.\d+)*$/.test(String(data.version)))throw new Error("Versão inválida");
-
-    if(compareVersions(APP_VERSION,data.version)>0) {
-      latestUpdateUrl=typeof data.downloadUrl==="string"&&data.downloadUrl.startsWith("https://")?data.downloadUrl:DEFAULT_DOWNLOAD_URL;
-      document.getElementById("updateVersion").textContent="VERSÃO "+data.version;
-      document.getElementById("updateDescription").textContent=data.notes||"Uma nova versão do Headshot Sensitivity está disponível.";
-      notice.style.display="block";
-    } else {
-      notice.style.display="none";
-    }
-  } catch(error) {
-    notice.style.display="none";
-    console.log("Verificação de atualização:",error.message);
-  }
-}
-
-function openUpdateDownload() {
-  if(!latestUpdateUrl.startsWith("https://"))latestUpdateUrl=DEFAULT_DOWNLOAD_URL;
-  window.location.href=latestUpdateUrl;
-}
-
-function dismissUpdate() {
-  document.getElementById("updateNotice").style.display="none";
-}
-
-let lastConfigKey="";
-let autoRefresh=true;
-let refreshTimer=null;
-let diagnosticsBusy=false;
-
-function showPage(page) {
-  const isDiagnostics=page==="diagnostics";
-  document.getElementById("sensitivityPage").classList.toggle("active",!isDiagnostics);
-  document.getElementById("diagnosticsPage").classList.toggle("active",isDiagnostics);
-  document.getElementById("tabSensitivity").classList.toggle("active",!isDiagnostics);
-  document.getElementById("tabDiagnostics").classList.toggle("active",isDiagnostics);
-  if(isDiagnostics){refreshDiagnostics();startAutoRefresh();}
-  else{stopAutoRefresh();}
-}
-
-function randomInt(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
-
-function generate() {
-  const brand=document.getElementById("brand").value;
-  const model=document.getElementById("model").value.trim();
-  const style=document.getElementById("style").value;
-  const screen=document.getElementById("screen").value;
-  const fingers=Number(document.getElementById("control").value);
-  const profiles={
-    balanced:[175,165,150,135,95],
-    rush:[190,180,165,145,105],
-    precision:[160,150,135,120,85]
-  };
-  let adjustment=0;
-  if(screen==="90")adjustment=2;
-  if(screen==="120")adjustment=4;
-  if(screen==="144")adjustment=5;
-  if(fingers>=4)adjustment+=2;
-  if(fingers===2)adjustment-=2;
-  const names=["Geral","Ponto vermelho","Mira 2x","Mira 4x","Mira AWM"];
-  let values,look,buttonSize,dpi,configKey,attempts=0;
-  do {
-    values=profiles[style].map(base=>Math.max(0,Math.min(200,base+adjustment+randomInt(-12,12))));
-    look=Math.max(0,Math.min(200,values[0]+5));
-    buttonSize=randomInt(40,60);
-    dpi=randomInt(320,480);
-    configKey=JSON.stringify({values,look,buttonSize,dpi});
-    attempts++;
-  } while(configKey===lastConfigKey&&attempts<100);
-
-  if(configKey===lastConfigKey) {
-    values[0]=values[0]<200?values[0]+1:values[0]-1;
-    look=Math.max(0,Math.min(200,values[0]+5));
-    configKey=JSON.stringify({values,look,buttonSize,dpi});
-  }
-  lastConfigKey=configKey;
-  let output="";
-  names.forEach((name,index)=>{
-    output+='<div class="stat"><span>'+name+'</span><strong>'+values[index]+'</strong></div>';
-  });
-  output+='<div class="stat"><span>Olhadinha</span><strong>'+look+'</strong></div>';
-  output+='<div class="stat"><span>Tamanho do botão de tiro</span><strong>'+buttonSize+'%</strong></div>';
-  output+='<div class="stat"><span>DPI sugerido (não aplicado)</span><strong>'+dpi+'</strong></div>';
-  document.getElementById("stats").innerHTML=output;
-  document.getElementById("result").style.display="block";
-  window.lastConfig="HEADSHOT SENSITIVITY\n"+
-    "Marca: "+brand+"\n"+
-    "Modelo: "+(model||"Não informado")+"\n"+
-    "Estilo: "+style+"\n"+
-    "Tela: "+(screen==="unknown"?"Não informado":screen+" Hz")+"\n"+
-    "Controle: "+fingers+" dedos\n"+
-    names.map((name,index)=>name+": "+values[index]).join("\n")+
-    "\nOlhadinha: "+look+
-    "\nTamanho do botão de tiro: "+buttonSize+"%"+
-    "\nDPI sugerido (não aplicado): "+dpi;
-  document.getElementById("result").scrollIntoView({behavior:"smooth",block:"start"});
-}
-
-async function copyResult() {
-  const text=window.lastConfig||"";
-  if(!text){alert("Gere uma configuração primeiro.");return;}
-  if(navigator.clipboard&&window.isSecureContext) {
-    try{await navigator.clipboard.writeText(text);alert("Configuração copiada!");}
-    catch(error){fallbackCopy(text);}
-  } else {fallbackCopy(text);}
-}
-
-function fallbackCopy(text) {
-  const area=document.createElement("textarea");
-  area.value=text;area.style.position="fixed";area.style.opacity="0";
-  document.body.appendChild(area);area.select();
-  try {
-    const copied=document.execCommand("copy");
-    alert(copied?"Configuração copiada!":"Não foi possível copiar. Tente selecionar o texto manualmente.");
-  } catch(error) {
-    alert("Não foi possível copiar. Tente selecionar o texto manualmente.");
-  }
-  area.remove();
-}
-
-function setConnection(ok,message) {
-  document.getElementById("connectionStatus").textContent=message;
-  document.getElementById("connectionDot").className="dot"+(ok?" ok":" error");
-}
-
-function formatMB(value) {
-  if(!Number.isFinite(value)||value<0)return "—";
-  return Math.round(value).toLocaleString("pt-BR")+" MB";
-}
-
-function setMeter(id,percent) {
-  const value=Math.max(0,Math.min(100,percent));
-  document.getElementById(id).style.width=value+"%";
-}
-
-function refreshDiagnostics() {
-  if(diagnosticsBusy)return;
-  diagnosticsBusy=true;
-  try {
-    if(!window.AndroidDiagnostics||typeof window.AndroidDiagnostics.getDiagnostics!=="function") {
-      setConnection(false,"Ponte Android indisponível");
-      document.getElementById("lastUpdate").textContent="Abra o APK instalado no Android. A prévia HTML ou um navegador comum não fornece estas medições nativas.";
-      return;
-    }
-    const raw=window.AndroidDiagnostics.getDiagnostics();
-    const data=JSON.parse(raw);
-    if(data.error)throw new Error(data.error);
-    const total=Number(data.totalRamMB);
-    const available=Number(data.availableRamMB);
-    const used=Number(data.usedRamMB);
-    const appMemory=Number(data.appMemoryMB);
-    const cpu=Number(data.cpuPercent);
-    const fps=Number(data.fpsApp);
-    document.getElementById("totalRam").textContent=formatMB(total);
-    document.getElementById("availableRam").textContent=formatMB(available);
-    document.getElementById("usedRam").textContent=formatMB(used);
-    document.getElementById("appRam").textContent=formatMB(appMemory);
-    document.getElementById("cpuValue").textContent=Number.isFinite(cpu)?cpu.toFixed(1).replace(".",",")+"%":"—";
-    document.getElementById("fpsValue").textContent=Number.isFinite(fps)?Math.round(fps)+" FPS":"—";
-    if(Number.isFinite(total)&&total>0&&Number.isFinite(used)) {
-      const ramPercent=Math.max(0,Math.min(100,used/total*100));
-      setMeter("ramMeter",ramPercent);
-      document.getElementById("ramPercent").textContent=ramPercent.toFixed(1).replace(".",",")+"% da RAM total";
-    }
-    if(Number.isFinite(cpu))setMeter("cpuMeter",cpu);
-    setConnection(true,"Conectado ao Android · dados recebidos");
-    document.getElementById("lastUpdate").textContent="Última atualização: "+new Date().toLocaleTimeString("pt-BR");
-  } catch(error) {
-    setConnection(false,"Erro ao ler os diagnósticos");
-    document.getElementById("lastUpdate").textContent="Detalhe: "+(error.message||"resposta inválida");
-  } finally {
-    diagnosticsBusy=false;
-  }
-}
-
-function startAutoRefresh() {
-  stopAutoRefresh();
-  if(!autoRefresh)return;
-  refreshTimer=setInterval(()=>{
-    const page=document.getElementById("diagnosticsPage");
-    if(page.classList.contains("active"))refreshDiagnostics();
-  },1500);
-}
-
-function stopAutoRefresh() {
-  if(refreshTimer!==null){clearInterval(refreshTimer);refreshTimer=null;}
-}
-
-function toggleAutoRefresh() {
-  autoRefresh=!autoRefresh;
-  document.getElementById("autoButton").textContent=autoRefresh?"PAUSAR ATUALIZAÇÃO":"RETOMAR ATUALIZAÇÃO";
-  if(autoRefresh){refreshDiagnostics();startAutoRefresh();}
-  else{stopAutoRefresh();}
-}
-
-document.addEventListener("DOMContentLoaded",checkForUpdates);
-</script>
-</body>
-                       </html>
+  // Submetralhadoras
+  {name:"MP40",category:"Submetralhadoras",icon:"⚡",type:"smg",adj:8},
+  {name:"MP5",category:"Submetralhadoras",icon:"⚡",type:"smg",adj:5},
+  {name:"MP5-X",category:"Submetralhadoras",icon:"⚡",type:"smg",adj:5},
+  {name:"UMP",category:"Submetralhadoras",icon:"⚡",type:"smg",adj:5},
+  {name:"P90",category:"Submetralhadoras",icon:"⚡",type:"smg",adj:6},
+  {name:"Thompson",category:"Submetralhadoras",icon:"⚡",type:"smg",adj:6},
+  {name:"Vector",category:"Submetralhadoras",icon:"⚡",type:"smg",adj:7},
+  {name:"MAC
