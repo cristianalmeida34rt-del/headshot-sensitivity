@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -10,51 +9,92 @@
   <style>
     * { box-sizing: border-box; }
 
+    :root {
+      color-scheme: dark;
+      --bg: #080812;
+      --card: #11111f;
+      --border: #292744;
+      --purple: #8b5cff;
+      --blue: #42a5ff;
+      --muted: #aaa8c9;
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
-      background: #080812;
-      color: #fff;
+      background: var(--bg);
+      color: white;
       font-family: Arial, sans-serif;
     }
 
     header {
-      padding: 24px 18px;
+      padding: 24px 16px 18px;
       text-align: center;
       background: linear-gradient(135deg, #10102a, #19103b);
       border-bottom: 1px solid #633cff;
     }
 
     .logo {
-      font-size: 25px;
+      font-size: 23px;
       font-weight: 900;
       letter-spacing: 1px;
     }
 
-    .logo span { color: #8b5cff; }
+    .logo span { color: var(--purple); }
 
     header p {
-      color: #aaa8c9;
+      color: var(--muted);
       font-size: 13px;
     }
 
     main {
-      width: min(100% - 28px, 500px);
-      margin: 25px auto;
+      width: min(100% - 24px, 520px);
+      margin: 20px auto;
     }
 
-    .card {
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-bottom: 18px;
+    }
+
+    .tab {
+      margin: 0;
+      padding: 13px 8px;
+      border: 1px solid #393456;
+      border-radius: 12px;
       background: #11111f;
-      border: 1px solid #292744;
+      color: #aaa8c9;
+      font-size: 13px;
+    }
+
+    .tab.active {
+      color: white;
+      border-color: #8b5cff;
+      background: linear-gradient(110deg, #34217d, #231344);
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
       border-radius: 18px;
-      padding: 20px;
-      margin-bottom: 17px;
+      padding: 18px;
+      margin-bottom: 16px;
       box-shadow: 0 8px 30px #0005;
     }
 
     h2 {
       font-size: 18px;
       margin: 0 0 18px;
+    }
+
+    h3 {
+      font-size: 15px;
+      margin: 0 0 10px;
     }
 
     label {
@@ -80,24 +120,25 @@
     }
 
     button {
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .action {
       width: 100%;
       padding: 15px;
       border: 0;
       border-radius: 11px;
-      margin-top: 18px;
+      margin-top: 17px;
       color: white;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: bold;
       background: linear-gradient(100deg, #4934ff, #9a38ff);
-      cursor: pointer;
     }
 
     button:active { transform: scale(.98); }
 
-    .result {
-      display: none;
-      margin-top: 20px;
-    }
+    .result { display: none; margin-top: 20px; }
 
     .stat {
       display: flex;
@@ -105,17 +146,11 @@
       justify-content: space-between;
       gap: 12px;
       padding: 13px 0;
-      border-bottom: 1px solid #292744;
+      border-bottom: 1px solid var(--border);
     }
 
-    .stat span { color: #bbb8d7; }
-    .stat strong { color: #9c80ff; font-size: 20px; }
-
-    .note {
-      color: #9996b8;
-      font-size: 12px;
-      line-height: 1.6;
-    }
+    .stat span { color: #bbb8d7; font-size: 13px; }
+    .stat strong { color: #b49bff; font-size: 19px; }
 
     .tag {
       display: inline-block;
@@ -125,6 +160,109 @@
       border-radius: 20px;
       color: #b9a5ff;
       font-size: 11px;
+    }
+
+    .note {
+      color: #9996b8;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #aaa8c9;
+      margin-bottom: 15px;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #77748f;
+      flex-shrink: 0;
+    }
+
+    .dot.ok { background: #35db9a; }
+    .dot.error { background: #ff5c75; }
+
+    .monitor-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 11px;
+    }
+
+    .monitor {
+      min-width: 0;
+      background: #0b0b18;
+      border: 1px solid #292744;
+      border-radius: 14px;
+      padding: 15px 12px;
+    }
+
+    .monitor .symbol {
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+
+    .monitor .label {
+      color: #aaa8c9;
+      font-size: 12px;
+      line-height: 1.4;
+      min-height: 32px;
+    }
+
+    .monitor .value {
+      font-size: clamp(20px, 5vw, 27px);
+      font-weight: 800;
+      margin: 7px 0;
+      overflow-wrap: anywhere;
+    }
+
+    .monitor .detail {
+      color: #77748f;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .blue { color: #42a5ff; }
+    .purple { color: #b18aff; }
+    .green { color: #35db9a; }
+    .yellow { color: #ffc857; }
+
+    .meter {
+      height: 6px;
+      background: #292744;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+
+    .meter-fill {
+      height: 100%;
+      width: 0;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #4934ff, #9a38ff);
+      transition: width .35s ease;
+    }
+
+    .diagnostic-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .secondary {
+      width: 100%;
+      padding: 12px 8px;
+      border: 1px solid #4934ff;
+      border-radius: 10px;
+      color: white;
+      background: #17132a;
+      font-size: 12px;
+      font-weight: bold;
     }
 
     footer {
@@ -143,83 +281,209 @@
 </header>
 
 <main>
-  <section class="card">
-    <h2>⚡ Gerador de Sensibilidade</h2>
-
-    <label for="brand">Marca do celular</label>
-    <select id="brand">
-      <option>Xiaomi / Redmi / POCO</option>
-      <option>Samsung</option>
-      <option>Motorola</option>
-      <option>Realme</option>
-      <option>Infinix</option>
-      <option>TECNO</option>
-      <option>Apple iPhone</option>
-      <option>Outra marca</option>
-    </select>
-
-    <label for="model">Modelo do celular</label>
-    <input id="model" placeholder="Ex.: Redmi Note 14 4G">
-
-    <label for="style">Estilo de jogo</label>
-    <select id="style">
-      <option value="balanced">Equilibrado</option>
-      <option value="rush">Agressivo / Rush</option>
-      <option value="precision">Precisão</option>
-    </select>
-
-    <label for="screen">Taxa de atualização da tela</label>
-    <select id="screen">
-      <option value="60">60 Hz</option>
-      <option value="90">90 Hz</option>
-      <option value="120">120 Hz</option>
-      <option value="144">144 Hz</option>
-      <option value="unknown">Não sei</option>
-    </select>
-
-    <label for="control">Estilo de controle</label>
-    <select id="control">
-      <option value="2">2 dedos</option>
-      <option value="3">3 dedos</option>
-      <option value="4">4 dedos</option>
-      <option value="5">5 dedos ou mais</option>
-    </select>
-
-    <button type="button" onclick="generate()">
-      GERAR MINHA SENSIBILIDADE
+  <nav class="tabs" aria-label="Abas do aplicativo">
+    <button class="tab active" id="tabSensitivity"
+      type="button" onclick="showPage('sensitivity')">
+      🎯 Sensibilidade
     </button>
+    <button class="tab" id="tabDiagnostics"
+      type="button" onclick="showPage('diagnostics')">
+      📊 Diagnóstico
+    </button>
+  </nav>
 
-    <div class="result" id="result">
-      <h2>🎯 Sua configuração</h2>
-      <div class="tag">NOVA COMBINAÇÃO GERADA</div>
-      <div id="stats"></div>
+  <div class="page active" id="sensitivityPage">
+    <section class="card">
+      <h2>⚡ Gerador de Sensibilidade</h2>
 
-      <button type="button" onclick="copyResult()">
-        COPIAR CONFIGURAÇÃO
+      <label for="brand">Marca do celular</label>
+      <select id="brand">
+        <option>Xiaomi / Redmi / POCO</option>
+        <option>Samsung</option>
+        <option>Motorola</option>
+        <option>Realme</option>
+        <option>Infinix</option>
+        <option>TECNO</option>
+        <option>Apple iPhone</option>
+        <option>Outra marca</option>
+      </select>
+
+      <label for="model">Modelo do celular</label>
+      <input id="model" placeholder="Ex.: Redmi Note 14 4G">
+
+      <label for="style">Estilo de jogo</label>
+      <select id="style">
+        <option value="balanced">Equilibrado</option>
+        <option value="rush">Agressivo / Rush</option>
+        <option value="precision">Precisão</option>
+      </select>
+
+      <label for="screen">Taxa de atualização da tela</label>
+      <select id="screen">
+        <option value="60">60 Hz</option>
+        <option value="90">90 Hz</option>
+        <option value="120">120 Hz</option>
+        <option value="144">144 Hz</option>
+        <option value="unknown">Não sei</option>
+      </select>
+
+      <label for="control">Estilo de controle</label>
+      <select id="control">
+        <option value="2">2 dedos</option>
+        <option value="3">3 dedos</option>
+        <option value="4">4 dedos</option>
+        <option value="5">5 dedos ou mais</option>
+      </select>
+
+      <button class="action" type="button" onclick="generate()">
+        GERAR MINHA SENSIBILIDADE
       </button>
 
-      <p class="note">
-        Estas configurações são sugestões experimentais. Gere novamente
-        para receber outra combinação e teste os valores no próprio jogo.
-        O aplicativo não modifica automaticamente o jogo nem o DPI do Android.
-      </p>
-    </div>
-  </section>
+      <div class="result" id="result">
+        <h2>🎯 Sua configuração</h2>
+        <div class="tag">NOVA COMBINAÇÃO GERADA</div>
+        <div id="stats"></div>
 
-  <section class="card">
-    <h2>💎 Sobre o aplicativo</h2>
-    <p class="note">
-      O Headshot Sensitivity cria sugestões de configuração de acordo com
-      as opções escolhidas. Os resultados são gerados no próprio aparelho,
-      sem exigir uma conta ou enviar seus dados para um servidor.
-    </p>
-  </section>
+        <button class="action" type="button" onclick="copyResult()">
+          COPIAR CONFIGURAÇÃO
+        </button>
+
+        <p class="note">
+          Estas configurações são sugestões experimentais.
+          O aplicativo não modifica automaticamente o jogo nem o DPI.
+          O DPI mostrado é apenas uma sugestão, não uma alteração do sistema.
+        </p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>💎 Sobre o aplicativo</h2>
+      <p class="note">
+        O Headshot Sensitivity gera sugestões com base nas opções escolhidas.
+        As combinações são criadas no aparelho.
+      </p>
+    </section>
+  </div>
+
+  <div class="page" id="diagnosticsPage">
+    <section class="card">
+      <h2>📊 Diagnóstico do Celular</h2>
+
+      <div class="status">
+        <span class="dot" id="connectionDot"></span>
+        <span id="connectionStatus">Verificando conexão com Android...</span>
+      </div>
+
+      <div class="monitor-grid">
+        <div class="monitor">
+          <div class="symbol blue">▤</div>
+          <div class="label">RAM total do sistema</div>
+          <div class="value blue" id="totalRam">—</div>
+          <div class="detail">Memória física detectada</div>
+        </div>
+
+        <div class="monitor">
+          <div class="symbol purple">▥</div>
+          <div class="label">RAM disponível</div>
+          <div class="value purple" id="availableRam">—</div>
+          <div class="detail">Memória disponível no sistema</div>
+        </div>
+
+        <div class="monitor">
+          <div class="symbol yellow">▰</div>
+          <div class="label">RAM usada pelo sistema</div>
+          <div class="value yellow" id="usedRam">—</div>
+          <div class="meter">
+            <div class="meter-fill" id="ramMeter"></div>
+          </div>
+          <div class="detail" id="ramPercent">Aguardando dados</div>
+        </div>
+
+        <div class="monitor">
+          <div class="symbol green">▣</div>
+          <div class="label">RAM do aplicativo</div>
+          <div class="value green" id="appRam">—</div>
+          <div class="detail">Memória PSS do processo do app</div>
+        </div>
+
+        <div class="monitor">
+          <div class="symbol blue">◉</div>
+          <div class="label">CPU do aplicativo</div>
+          <div class="value blue" id="cpuValue">—</div>
+          <div class="meter">
+            <div class="meter-fill" id="cpuMeter"></div>
+          </div>
+          <div class="detail">Uso estimado pelo processo do app</div>
+        </div>
+
+        <div class="monitor">
+          <div class="symbol purple">⚡</div>
+          <div class="label">FPS da interface do app</div>
+          <div class="value purple" id="fpsValue">—</div>
+          <div class="detail">Quadros por segundo do app, não do jogo</div>
+        </div>
+      </div>
+
+      <div class="diagnostic-actions">
+        <button class="secondary" type="button" onclick="refreshDiagnostics()">
+          ↻ ATUALIZAR
+        </button>
+        <button class="secondary" type="button" onclick="toggleAutoRefresh()"
+          id="autoButton">
+          PAUSAR ATUALIZAÇÃO
+        </button>
+      </div>
+
+      <p class="note" id="lastUpdate">
+        As medições aparecerão quando a conexão Android estiver disponível.
+      </p>
+    </section>
+
+    <section class="card">
+      <h3>ℹ️ Sobre estas medições</h3>
+      <p class="note">
+        A RAM total, disponível e usada são dados do sistema Android.
+        A RAM PSS e a CPU são do processo deste aplicativo.
+        O FPS é medido pela interface do aplicativo usando Choreographer.
+        Estes dados não medem diretamente o FPS nem a CPU do Free Fire.
+      </p>
+      <p class="note">
+        A leitura funciona na versão APK Android com a ponte Java configurada.
+        Se abrir este HTML num navegador comum, a ponte nativa não estará disponível.
+      </p>
+    </section>
+  </div>
 </main>
 
-<footer>HEADSHOT SENSITIVITY · VERSÃO 1.1</footer>
+<footer>HEADSHOT SENSITIVITY · VERSÃO 1.2</footer>
 
 <script>
   let lastConfigKey = "";
+  let autoRefresh = true;
+  let refreshTimer = null;
+  let diagnosticsBusy = false;
+
+  function showPage(page) {
+    const isDiagnostics = page === "diagnostics";
+
+    document.getElementById("sensitivityPage").classList.toggle(
+      "active", !isDiagnostics
+    );
+    document.getElementById("diagnosticsPage").classList.toggle(
+      "active", isDiagnostics
+    );
+    document.getElementById("tabSensitivity").classList.toggle(
+      "active", !isDiagnostics
+    );
+    document.getElementById("tabDiagnostics").classList.toggle(
+      "active", isDiagnostics
+    );
+
+    if (isDiagnostics) {
+      refreshDiagnostics();
+      startAutoRefresh();
+    }
+  }
 
   function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -239,7 +503,6 @@
     };
 
     let adjustment = 0;
-
     if (screen === "90") adjustment = 2;
     if (screen === "120") adjustment = 4;
     if (screen === "144") adjustment = 5;
@@ -247,61 +510,29 @@
     if (fingers === 2) adjustment -= 2;
 
     const names = [
-      "Geral",
-      "Ponto vermelho",
-      "Mira 2x",
-      "Mira 4x",
-      "Mira AWM"
+      "Geral", "Ponto vermelho", "Mira 2x", "Mira 4x", "Mira AWM"
     ];
 
-    let values;
-    let look;
-    let buttonSize;
-    let dpi;
-    let configKey;
+    let values, look, buttonSize, dpi, configKey;
     let attempts = 0;
 
-    // Gera outra combinação se o resultado anterior for igual.
     do {
       values = profiles[style].map(base =>
-        Math.max(
-          0,
-          Math.min(200, base + adjustment + randomInt(-12, 12))
-        )
+        Math.max(0, Math.min(200, base + adjustment + randomInt(-12, 12)))
       );
 
-      look = Math.max(
-        0,
-        Math.min(200, values[0] + 5)
-      );
-
+      look = Math.max(0, Math.min(200, values[0] + 5));
       buttonSize = randomInt(40, 60);
       dpi = randomInt(320, 480);
 
-      configKey = JSON.stringify({
-        values: values,
-        look: look,
-        buttonSize: buttonSize,
-        dpi: dpi
-      });
-
+      configKey = JSON.stringify({ values, look, buttonSize, dpi });
       attempts++;
     } while (configKey === lastConfigKey && attempts < 100);
 
-    // Garantia adicional de diferença em cliques consecutivos.
     if (configKey === lastConfigKey) {
-      values[0] = values[0] < 200
-        ? values[0] + 1
-        : values[0] - 1;
-
+      values[0] = values[0] < 200 ? values[0] + 1 : values[0] - 1;
       look = Math.max(0, Math.min(200, values[0] + 5));
-
-      configKey = JSON.stringify({
-        values: values,
-        look: look,
-        buttonSize: buttonSize,
-        dpi: dpi
-      });
+      configKey = JSON.stringify({ values, look, buttonSize, dpi });
     }
 
     lastConfigKey = configKey;
@@ -309,22 +540,15 @@
     let output = "";
 
     names.forEach((name, index) => {
-      output +=
-        '<div class="stat"><span>' + name +
-        '</span><strong>' + values[index] +
-        '</strong></div>';
+      output += '<div class="stat"><span>' + name +
+        '</span><strong>' + values[index] + '</strong></div>';
     });
 
-    output +=
-      '<div class="stat"><span>Olhadinha</span><strong>' +
+    output += '<div class="stat"><span>Olhadinha</span><strong>' +
       look + '</strong></div>';
-
-    output +=
-      '<div class="stat"><span>Tamanho do botão de tiro</span><strong>' +
+    output += '<div class="stat"><span>Tamanho do botão de tiro</span><strong>' +
       buttonSize + '%</strong></div>';
-
-    output +=
-      '<div class="stat"><span>DPI sugerido</span><strong>' +
+    output += '<div class="stat"><span>DPI sugerido (não aplicado)</span><strong>' +
       dpi + '</strong></div>';
 
     document.getElementById("stats").innerHTML = output;
@@ -340,11 +564,10 @@
       names.map((name, index) => name + ": " + values[index]).join("\n") +
       "\nOlhadinha: " + look +
       "\nTamanho do botão de tiro: " + buttonSize + "%" +
-      "\nDPI sugerido: " + dpi;
+      "\nDPI sugerido (não aplicado): " + dpi;
 
     document.getElementById("result").scrollIntoView({
-      behavior: "smooth",
-      block: "start"
+      behavior: "smooth", block: "start"
     });
   }
 
@@ -373,23 +596,134 @@
     area.value = text;
     area.style.position = "fixed";
     area.style.opacity = "0";
-
     document.body.appendChild(area);
     area.select();
 
     try {
       const copied = document.execCommand("copy");
-      alert(copied
-        ? "Configuração copiada!"
-        : "Não foi possível copiar. Tente selecionar o texto manualmente.");
+      alert(copied ? "Configuração copiada!" :
+        "Não foi possível copiar. Tente selecionar o texto manualmente.");
     } catch (error) {
       alert("Não foi possível copiar. Tente selecionar o texto manualmente.");
     }
 
     area.remove();
   }
-</script>
 
+  function setConnection(ok, message) {
+    document.getElementById("connectionStatus").textContent = message;
+    document.getElementById("connectionDot").className =
+      "dot" + (ok ? " ok" : " error");
+  }
+
+  function formatMB(value) {
+    if (!Number.isFinite(value) || value < 0) return "—";
+    return Math.round(value).toLocaleString("pt-BR") + " MB";
+  }
+
+  function setMeter(id, percent) {
+    const value = Math.max(0, Math.min(100, percent));
+    document.getElementById(id).style.width = value + "%";
+  }
+
+  function refreshDiagnostics() {
+    if (diagnosticsBusy) return;
+    diagnosticsBusy = true;
+
+    try {
+      if (!window.AndroidDiagnostics ||
+          typeof window.AndroidDiagnostics.getDiagnostics !== "function") {
+        setConnection(false, "Ponte Android indisponível");
+        document.getElementById("lastUpdate").textContent =
+          "Abra o APK instalado no Android. A prévia HTML ou um navegador " +
+          "comum não fornece estas medições nativas.";
+        return;
+      }
+
+      const raw = window.AndroidDiagnostics.getDiagnostics();
+      const data = JSON.parse(raw);
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      const total = Number(data.totalRamMB);
+      const available = Number(data.availableRamMB);
+      const used = Number(data.usedRamMB);
+      const appMemory = Number(data.appMemoryMB);
+      const cpu = Number(data.cpuPercent);
+      const fps = Number(data.fpsApp);
+
+      document.getElementById("totalRam").textContent = formatMB(total);
+      document.getElementById("availableRam").textContent = formatMB(available);
+      document.getElementById("usedRam").textContent = formatMB(used);
+      document.getElementById("appRam").textContent = formatMB(appMemory);
+
+      document.getElementById("cpuValue").textContent =
+        Number.isFinite(cpu) ? cpu.toFixed(1).replace(".", ",") + "%" : "—";
+
+      document.getElementById("fpsValue").textContent =
+        Number.isFinite(fps) ? Math.round(fps) + " FPS" : "—";
+
+      if (Number.isFinite(total) && total > 0 && Number.isFinite(used)) {
+        const ramPercent = Math.max(0, Math.min(100, used / total * 100));
+        setMeter("ramMeter", ramPercent);
+        document.getElementById("ramPercent").textContent =
+          ramPercent.toFixed(1).replace(".", ",") + "% da RAM total";
+      }
+
+      if (Number.isFinite(cpu)) {
+        setMeter("cpuMeter", cpu);
+      }
+
+      setConnection(true, "Conectado ao Android · dados recebidos");
+      document.getElementById("lastUpdate").textContent =
+        "Última atualização: " + new Date().toLocaleTimeString("pt-BR");
+
+    } catch (error) {
+      setConnection(false, "Erro ao ler os diagnósticos");
+      document.getElementById("lastUpdate").textContent =
+        "Detalhe: " + (error.message || "resposta inválida");
+    } finally {
+      diagnosticsBusy = false;
+    }
+  }
+
+  function startAutoRefresh() {
+    stopAutoRefresh();
+
+    if (!autoRefresh) return;
+
+    refreshTimer = setInterval(() => {
+      const page = document.getElementById("diagnosticsPage");
+
+      if (page.classList.contains("active")) {
+        refreshDiagnostics();
+      }
+    }, 1500);
+  }
+
+  function stopAutoRefresh() {
+    if (refreshTimer !== null) {
+      clearInterval(refreshTimer);
+      refreshTimer = null;
+    }
+  }
+
+  function toggleAutoRefresh() {
+    autoRefresh = !autoRefresh;
+
+    document.getElementById("autoButton").textContent =
+      autoRefresh ? "PAUSAR ATUALIZAÇÃO" : "RETOMAR ATUALIZAÇÃO";
+
+    if (autoRefresh) {
+      refreshDiagnostics();
+      startAutoRefresh();
+    } else {
+      stopAutoRefresh();
+    }
+  }
+</script>
 </body>
 </html>
 
