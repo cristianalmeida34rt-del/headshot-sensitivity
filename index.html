@@ -651,21 +651,36 @@ function setDiagnostic(id, value) {
 }
 
 function refreshDiagnostics() {
-  const bridge = window.AndroidDiagnostics;
+  try {
+    const bridge = window.AndroidDiagnostics;
 
-  if (bridge && typeof bridge.getDiagnostics === "function") {
-    try {
-      const result = bridge.getDiagnostics();
-
-      if (result && typeof result === "object" &&
-          typeof result.then !== "function") {
-        applyNativeDiagnostics(result);
-        return;
-      }
-    } catch (error) {
-      console.warn("Falha na consulta nativa:", error);
+    if (!bridge || typeof bridge.getDiagnostics !== "function") {
+      throw new Error("Integração Android indisponível");
     }
+
+    let data = bridge.getDiagnostics();
+
+    if (typeof data === "string") {
+      data = JSON.parse(data);
+    }
+
+    if (!data || data.error) {
+      throw new Error(data?.error || "Falha no diagnóstico");
+    }
+
+    applyNativeDiagnostics(data);
+  } catch (error) {
+    console.error("Diagnóstico:", error);
+
+    setConnection("Diagnóstico indisponível", "error");
+    setDiagnostic("totalRam", "N/D");
+    setDiagnostic("availableRam", "N/D");
+    setDiagnostic("usedRam", "N/D");
+    setDiagnostic("appRam", "N/D");
+    setDiagnostic("cpuValue", "N/D");
+    setDiagnostic("ramPercent", "Indisponível");
   }
+}
 
   setConnection("Medições nativas indisponíveis", "error");
   setDiagnostic("totalRam", "N/D");
@@ -684,25 +699,69 @@ function refreshDiagnostics() {
 }
 
 function applyNativeDiagnostics(data) {
+  const total = Number(data.totalRamMB);
+  const available = Number(data.availableRamMB);
+  const used = Number(data.usedRamMB);
+  const appRam = Number(data.appMemoryMB);
+  const cpu = Number(data.cpuPercent);
+  const fps = Number(data.fpsApp);
+
   setConnection("Diagnóstico conectado", "success");
 
-  setDiagnostic("totalRam", data.totalRam ?? "N/D");
-  setDiagnostic("availableRam", data.availableRam ?? "N/D");
-  setDiagnostic("usedRam", data.usedRam ?? "N/D");
-  setDiagnostic("appRam", data.appRam ?? "N/D");
-  setDiagnostic("cpuValue", data.cpuUsage ?? "N/D");
+  setDiagnostic(
+    "totalRam",
+    Number.isFinite(total) ? total + " MB" : "N/D"
+  );
 
-  const ram = Number(data.ramPercent);
-  if (Number.isFinite(ram)) {
-    const percent = Math.max(0, Math.min(100, ram));
-    setDiagnostic("ramPercent", percent + "%");
+  setDiagnostic(
+    "availableRam",
+    Number.isFinite(available) ? available + " MB" : "N/D"
+  );
+
+  setDiagnostic(
+    "usedRam",
+    Number.isFinite(used) ? used + " MB" : "N/D"
+  );
+
+  setDiagnostic(
+    "appRam",
+    Number.isFinite(appRam) ? appRam + " MB" : "N/D"
+  );
+
+  setDiagnostic(
+    "cpuValue",
+    Number.isFinite(cpu) ? cpu + "%" : "N/D"
+  );
+
+  if (Number.isFinite(total) && total > 0 &&
+      Number.isFinite(used)) {
+    const percent = Math.max(
+      0,
+      Math.min(100, used / total * 100)
+    );
+
+    setDiagnostic("ramPercent", percent.toFixed(1) + "%");
     document.getElementById("ramMeter").style.width =
       percent + "%";
   }
 
-  document.getElementById("lastUpdate").textContent =
+  if (Number.isFinite(cpu)) {
+    const cpuMeter = document.getElementById("cpuMeter");
+    if (cpuMeter) {
+      cpuMeter.style.width =
+        Math.max(0, Math.min(100, cpu)) + "%";
+    }
+  }
+
+  if (Number.isFinite(fps)) {
+    setDiagnostic("fpsValue", fps + " FPS");
+  }
+
+  setDiagnostic(
+    "lastUpdate",
     "Última verificação: " +
-    new Date().toLocaleTimeString("pt-BR");
+      new Date().toLocaleTimeString("pt-BR")
+  );
 }
 
 function measureInterfaceFPS() {
