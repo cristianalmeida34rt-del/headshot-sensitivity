@@ -674,71 +674,71 @@ footer {
 
   /* DIAGNÓSTICO */
 
-  function showUnavailableDiagnostic() {
-    setText("androidStatus", "Não disponível");
-    setText("totalRam", "N/D");
-    setText("availableRam", "N/D");
-    setText("usedRam", "N/D");
-    setText("appRam", "N/D");
-    setText("cpuValue", "N/D");
-    setText("fpsValue", "N/D");
-    setText("connectionStatus", "HTML funcionando");
-    setText(
-      "diagnosticMessage",
-      "A interface funciona, mas a integração Android não foi encontrada."
-    );
-  }
-
-  function applyDiagnostic(data) {
-    if (typeof data === "string") {
-      data = JSON.parse(data);
-    }
-
-    if (!data || typeof data !== "object") {
-      throw new Error("Resposta inválida");
-    }
-
-    if (data.error) {
-      setText("androidStatus", "Erro no diagnóstico");
-      setText("diagnosticMessage", String(data.error));
-      return;
-    }
-
-    setText("androidStatus", "Conectado");
-    setText("totalRam", data.totalRamMB != null ? data.totalRamMB + " MB" : "N/D");
-    setText("availableRam", data.availableRamMB != null ? data.availableRamMB + " MB" : "N/D");
-    setText("usedRam", data.usedRamMB != null ? data.usedRamMB + " MB" : "N/D");
-    setText("appRam", data.appMemoryMB != null ? data.appMemoryMB + " MB" : "N/D");
-    setText("cpuValue", data.cpuPercent != null ? data.cpuPercent + "%" : "N/D");
-    setText("fpsValue", data.fpsApp != null ? data.fpsApp : "N/D");
-    setText("connectionStatus", "Integração Android disponível");
-    setText("diagnosticMessage", "Diagnóstico atualizado.");
-  }
-
   function updateDiagnostic() {
     setText("htmlStatus", "Funcionando");
     setText("diagnosticMessage", "Verificando integração Android...");
 
     try {
-      if (!window.AndroidDiagnostics ||
-          typeof window.AndroidDiagnostics.getDiagnostics !== "function") {
-        showUnavailableDiagnostic();
-        return;
-      }
+      if (window.AndroidDiagnostics &&
+          typeof window.AndroidDiagnostics.getDiagnostics === "function") {
 
-      var data = window.AndroidDiagnostics.getDiagnostics();
+        var data = window.AndroidDiagnostics.getDiagnostics();
 
-      /* Compatível com retorno direto e com Promise de integrações nativas. */
-      if (data && typeof data.then === "function") {
-        data.then(applyDiagnostic).catch(function () {
-          setText("androidStatus", "Falha na leitura");
-          setText(
-            "diagnosticMessage",
-            "Não foi possível ler os dados Android. Verifique a integração nativa."
-          );
-        });
+        if (typeof data === "string") {
+          data = JSON.parse(data);
+        }
+
+        if (!data || typeof data !== "object") {
+          throw new Error("Resposta inválida");
+        }
+
+        if (data.error) {
+          setText("androidStatus", "Erro no diagnóstico");
+          setText("diagnosticMessage", String(data.error));
+          return;
+        }
+
+        setText("androidStatus", "Conectado");
+        setText(
+          "totalRam",
+          data.totalRamMB != null ? data.totalRamMB + " MB" : "N/D"
+        );
+        setText(
+          "availableRam",
+          data.availableRamMB != null ? data.availableRamMB + " MB" : "N/D"
+        );
+        setText(
+          "usedRam",
+          data.usedRamMB != null ? data.usedRamMB + " MB" : "N/D"
+        );
+        setText(
+          "appRam",
+          data.appMemoryMB != null ? data.appMemoryMB + " MB" : "N/D"
+        );
+        setText(
+          "cpuValue",
+          data.cpuPercent != null ? data.cpuPercent + "%" : "N/D"
+        );
+        setText(
+          "fpsValue",
+          data.fpsApp != null ? data.fpsApp : "N/D"
+        );
+
+        setText("connectionStatus", "Integração Android disponível");
+        setText("diagnosticMessage", "Diagnóstico atualizado.");
       } else {
-        applyDiagnostic(data);
+        setText("androidStatus", "Não disponível");
+        setText("totalRam", "N/D");
+        setText("availableRam", "N/D");
+        setText("usedRam", "N/D");
+        setText("appRam", "N/D");
+        setText("cpuValue", "N/D");
+        setText("fpsValue", "N/D");
+        setText("connectionStatus", "HTML funcionando");
+        setText(
+          "diagnosticMessage",
+          "A interface funciona, mas a integração Android não foi encontrada."
+        );
       }
     } catch (error) {
       setText("androidStatus", "Falha na leitura");
