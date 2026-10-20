@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#080812">
   <title>Headshot Sensitivity</title>
+
   <style>
     * { box-sizing: border-box; }
 
@@ -102,6 +103,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 12px;
       padding: 13px 0;
       border-bottom: 1px solid #292744;
     }
@@ -115,6 +117,16 @@
       line-height: 1.6;
     }
 
+    .tag {
+      display: inline-block;
+      padding: 5px 9px;
+      margin-bottom: 12px;
+      border: 1px solid #4934ff;
+      border-radius: 20px;
+      color: #b9a5ff;
+      font-size: 11px;
+    }
+
     footer {
       text-align: center;
       padding: 20px;
@@ -123,8 +135,8 @@
     }
   </style>
 </head>
-<body>
 
+<body>
 <header>
   <div class="logo">HEADSHOT <span>SENSITIVITY</span></div>
   <p>Seu jogo. Sua configuração. Seu estilo.</p>
@@ -173,16 +185,23 @@
       <option value="5">5 dedos ou mais</option>
     </select>
 
-    <button onclick="generate()">GERAR MINHA SENSIBILIDADE</button>
+    <button type="button" onclick="generate()">
+      GERAR MINHA SENSIBILIDADE
+    </button>
 
     <div class="result" id="result">
       <h2>🎯 Sua configuração</h2>
+      <div class="tag">NOVA COMBINAÇÃO GERADA</div>
       <div id="stats"></div>
-      <button onclick="copyResult()">COPIAR CONFIGURAÇÃO</button>
+
+      <button type="button" onclick="copyResult()">
+        COPIAR CONFIGURAÇÃO
+      </button>
+
       <p class="note">
-        Estes valores são sugestões iniciais geradas pelo aplicativo.
-        Teste no campo de treinamento e ajuste conforme sua preferência.
-        O aplicativo não altera as configurações do Free Fire automaticamente.
+        Estas configurações são sugestões experimentais. Gere novamente
+        para receber outra combinação e teste os valores no próprio jogo.
+        O aplicativo não modifica automaticamente o jogo nem o DPI do Android.
       </p>
     </div>
   </section>
@@ -190,16 +209,22 @@
   <section class="card">
     <h2>💎 Sobre o aplicativo</h2>
     <p class="note">
-      O Headshot Sensitivity ajuda você a criar sugestões de sensibilidade
-      para experimentar no Free Fire. As configurações são geradas no próprio
-      aparelho, sem exigir uma conta ou enviar seus dados para um servidor.
+      O Headshot Sensitivity cria sugestões de configuração de acordo com
+      as opções escolhidas. Os resultados são gerados no próprio aparelho,
+      sem exigir uma conta ou enviar seus dados para um servidor.
     </p>
   </section>
 </main>
 
-<footer>HEADSHOT SENSITIVITY · VERSÃO 1.0</footer>
+<footer>HEADSHOT SENSITIVITY · VERSÃO 1.1</footer>
 
 <script>
+  let lastConfigKey = "";
+
+  function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
   function generate() {
     const brand = document.getElementById("brand").value;
     const model = document.getElementById("model").value.trim();
@@ -213,7 +238,6 @@
       precision: [160, 150, 135, 120, 85]
     };
 
-    const base = profiles[style];
     let adjustment = 0;
 
     if (screen === "90") adjustment = 2;
@@ -221,10 +245,6 @@
     if (screen === "144") adjustment = 5;
     if (fingers >= 4) adjustment += 2;
     if (fingers === 2) adjustment -= 2;
-
-    const values = base.map(v =>
-      Math.max(0, Math.min(200, v + adjustment))
-    );
 
     const names = [
       "Geral",
@@ -234,14 +254,78 @@
       "Mira AWM"
     ];
 
+    let values;
+    let look;
+    let buttonSize;
+    let dpi;
+    let configKey;
+    let attempts = 0;
+
+    // Gera outra combinação se o resultado anterior for igual.
+    do {
+      values = profiles[style].map(base =>
+        Math.max(
+          0,
+          Math.min(200, base + adjustment + randomInt(-12, 12))
+        )
+      );
+
+      look = Math.max(
+        0,
+        Math.min(200, values[0] + 5)
+      );
+
+      buttonSize = randomInt(40, 60);
+      dpi = randomInt(320, 480);
+
+      configKey = JSON.stringify({
+        values: values,
+        look: look,
+        buttonSize: buttonSize,
+        dpi: dpi
+      });
+
+      attempts++;
+    } while (configKey === lastConfigKey && attempts < 100);
+
+    // Garantia adicional de diferença em cliques consecutivos.
+    if (configKey === lastConfigKey) {
+      values[0] = values[0] < 200
+        ? values[0] + 1
+        : values[0] - 1;
+
+      look = Math.max(0, Math.min(200, values[0] + 5));
+
+      configKey = JSON.stringify({
+        values: values,
+        look: look,
+        buttonSize: buttonSize,
+        dpi: dpi
+      });
+    }
+
+    lastConfigKey = configKey;
+
     let output = "";
-    names.forEach((name, i) => {
-      output += '<div class="stat"><span>' + name +
-        '</span><strong>' + values[i] + '</strong></div>';
+
+    names.forEach((name, index) => {
+      output +=
+        '<div class="stat"><span>' + name +
+        '</span><strong>' + values[index] +
+        '</strong></div>';
     });
 
-    output += '<div class="stat"><span>Olhadinha</span><strong>' +
-      Math.min(200, values[0] + 5) + '</strong></div>';
+    output +=
+      '<div class="stat"><span>Olhadinha</span><strong>' +
+      look + '</strong></div>';
+
+    output +=
+      '<div class="stat"><span>Tamanho do botão de tiro</span><strong>' +
+      buttonSize + '%</strong></div>';
+
+    output +=
+      '<div class="stat"><span>DPI sugerido</span><strong>' +
+      dpi + '</strong></div>';
 
     document.getElementById("stats").innerHTML = output;
     document.getElementById("result").style.display = "block";
@@ -250,8 +334,13 @@
       "HEADSHOT SENSITIVITY\n" +
       "Marca: " + brand + "\n" +
       "Modelo: " + (model || "Não informado") + "\n" +
-      names.map((n, i) => n + ": " + values[i]).join("\n") +
-      "\nOlhadinha: " + Math.min(200, values[0] + 5);
+      "Estilo: " + style + "\n" +
+      "Tela: " + (screen === "unknown" ? "Não informado" : screen + " Hz") + "\n" +
+      "Controle: " + fingers + " dedos\n" +
+      names.map((name, index) => name + ": " + values[index]).join("\n") +
+      "\nOlhadinha: " + look +
+      "\nTamanho do botão de tiro: " + buttonSize + "%" +
+      "\nDPI sugerido: " + dpi;
 
     document.getElementById("result").scrollIntoView({
       behavior: "smooth",
@@ -259,14 +348,21 @@
     });
   }
 
-  function copyResult() {
+  async function copyResult() {
     const text = window.lastConfig || "";
-    if (!text) return;
+
+    if (!text) {
+      alert("Gere uma configuração primeiro.");
+      return;
+    }
 
     if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text)
-        .then(() => alert("Configuração copiada!"))
-        .catch(() => fallbackCopy(text));
+      try {
+        await navigator.clipboard.writeText(text);
+        alert("Configuração copiada!");
+      } catch (error) {
+        fallbackCopy(text);
+      }
     } else {
       fallbackCopy(text);
     }
@@ -275,14 +371,19 @@
   function fallbackCopy(text) {
     const area = document.createElement("textarea");
     area.value = text;
+    area.style.position = "fixed";
+    area.style.opacity = "0";
+
     document.body.appendChild(area);
     area.select();
 
     try {
-      document.execCommand("copy");
-      alert("Configuração copiada!");
-    } catch (e) {
-      alert("Não foi possível copiar. Tente novamente.");
+      const copied = document.execCommand("copy");
+      alert(copied
+        ? "Configuração copiada!"
+        : "Não foi possível copiar. Tente selecionar o texto manualmente.");
+    } catch (error) {
+      alert("Não foi possível copiar. Tente selecionar o texto manualmente.");
     }
 
     area.remove();
@@ -291,3 +392,4 @@
 
 </body>
 </html>
+
