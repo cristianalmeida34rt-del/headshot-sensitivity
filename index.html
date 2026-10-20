@@ -3,474 +3,765 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080812">
-<meta name="description" content="Headshot Sensitivity: sugestões de sensibilidade para Free Fire e diagnóstico do dispositivo.">
 <title>Headshot Sensitivity</title>
+
 <style>
-*{box-sizing:border-box}
-:root{color-scheme:dark;--bg:#080812;--card:#11111f;--border:#292744;--purple:#8b5cff;--blue:#42a5ff;--muted:#aaa8c9;--green:#35db9a;--red:#ff5c75}
-html{scroll-behavior:smooth}
-body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#171034 0%,var(--bg) 52%);color:#fff;font-family:Arial,Helvetica,sans-serif}
-button,input,select{font:inherit}
-button{cursor:pointer;touch-action:manipulation}
-button:active{transform:scale(.985)}
-button:disabled{opacity:.55;cursor:not-allowed}
-header{text-align:center;padding:24px 16px 20px;background:linear-gradient(135deg,#10102a,#19103b);border-bottom:1px solid #633cff}
-.avatar{width:78px;height:78px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;background:linear-gradient(135deg,#4934ff,#9a38ff);border:2px solid #a88aff;box-shadow:0 0 25px #7044ff66;font-size:25px;font-weight:900}
-.avatar img{width:100%;height:100%;object-fit:cover}
-.logo{font-size:23px;font-weight:900;letter-spacing:1px}
-.subtitle{color:var(--muted);font-size:13px;margin-top:7px}
-.wrap{width:min(760px,100%);margin:0 auto;padding:16px 14px 32px}
-.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 16px}
-.tab{border:1px solid var(--border);border-radius:12px;background:#11111f;color:#c8c5e7;padding:12px 6px;font-size:13px;font-weight:800}
-.tab.active{background:linear-gradient(135deg,#5633c8,#2459a8);border-color:#9d80ff;color:white;box-shadow:0 5px 18px #5737bb40}
-.panel{display:none}
-.panel.active{display:block}
-.card{background:linear-gradient(145deg,#131323,#0e0e19);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 8px 24px #0002}
-h2{font-size:18px;margin:0 0 7px}
-h3{font-size:15px;margin:0 0 12px}
-.desc{font-size:13px;line-height:1.5;color:var(--muted);margin:0 0 14px}
-label{display:block;font-size:12px;color:#c9c5e8;font-weight:700;margin:0 0 7px}
-.field{margin-bottom:14px}
-input,select{width:100%;background:#090914;border:1px solid #343052;border-radius:10px;color:#fff;padding:12px;min-height:44px;outline:none}
-input:focus,select:focus{border-color:var(--purple);box-shadow:0 0 0 2px #8b5cff22}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.btn{border:0;border-radius:11px;padding:13px 15px;font-weight:900;color:white;background:linear-gradient(135deg,#7444ef,#3e6ee8);width:100%;min-height:46px}
-.btn.secondary{background:#1a1930;border:1px solid #383354;color:#ddd9ff}
-.weapon-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.weapon{background:#0c0c18;border:1px solid #302d4a;color:#e5e2ff;border-radius:11px;padding:10px 5px;text-align:center;font-size:12px;font-weight:800;min-height:68px}
-.weapon span{display:block;font-size:22px;margin-bottom:5px}
-.weapon.active{border-color:#9a76ff;background:#24194a;box-shadow:0 0 0 1px #8b5cff33}
-.result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
-.stat{border:1px solid #302d4a;background:#0a0a15;border-radius:12px;padding:12px}
-.stat .name{font-size:11px;color:var(--muted);margin-bottom:8px}
-.stat .value{font-size:24px;font-weight:900;color:#b9a1ff}
-.note{font-size:12px;line-height:1.5;color:var(--muted);margin-top:12px}
-.status-line{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-bottom:14px}
-.dot{width:9px;height:9px;border-radius:50%;background:#8b879f;flex:none}
-.dot.success{background:var(--green);box-shadow:0 0 9px #35db9a77}
-.dot.error{background:var(--red)}
-.meter{height:9px;background:#29263f;border-radius:99px;overflow:hidden;margin-top:8px}
-.meter>div{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:99px;transition:width .25s}
-.metric{padding:12px;background:#0a0a15;border:1px solid #302d4a;border-radius:12px;margin-bottom:10px}
-.metric-top{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--muted)}
-.metric-top strong{color:#fff;font-size:13px;text-align:right}
-.profile-row{display:flex;align-items:center;gap:14px}
-.profile-row .avatar{margin:0;flex:none}
-.hidden{display:none!important}
-footer{text-align:center;color:#777493;font-size:11px;padding:8px 8px 22px}
-@media(max-width:380px){.grid{grid-template-columns:1fr}.weapon-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.tab{font-size:12px;padding:11px 3px}.wrap{padding-left:10px;padding-right:10px}}
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  color-scheme: dark;
+  --bg: #080812;
+  --panel: #121225;
+  --panel2: #191932;
+  --blue: #3987ff;
+  --purple: #914bff;
+  --text: #f5f5ff;
+  --muted: #a3a3bd;
+  --border: #292944;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+}
+
+header {
+  padding: 24px 16px 18px;
+  text-align: center;
+  background: linear-gradient(135deg, #111126, #17102b);
+  border-bottom: 1px solid var(--border);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+header h1 span {
+  color: var(--blue);
+}
+
+header p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+nav {
+  display: flex;
+  gap: 7px;
+  padding: 12px;
+  background: #0d0d1b;
+  border-bottom: 1px solid var(--border);
+}
+
+.tab-button {
+  flex: 1;
+  min-width: 0;
+  padding: 13px 5px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.tab-button.active {
+  color: white;
+  border-color: var(--blue);
+  background: linear-gradient(135deg, #2455a5, #5630a0);
+}
+
+main {
+  width: 100%;
+  max-width: 650px;
+  margin: auto;
+  padding: 16px;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.card {
+  margin-bottom: 15px;
+  padding: 18px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+}
+
+.card h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.field {
+  margin-top: 20px;
+}
+
+.field label {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.field output {
+  color: #75adff;
+  font-weight: bold;
+}
+
+input[type="range"] {
+  display: block;
+  width: 100%;
+  accent-color: var(--blue);
+  cursor: pointer;
+}
+
+select {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--panel2);
+  color: white;
+  font-size: 14px;
+}
+
+.primary-button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px;
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.secondary-button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--panel2);
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.result {
+  margin-top: 16px;
+  padding: 14px;
+  border: 1px solid #354a82;
+  border-radius: 10px;
+  background: #101a30;
+}
+
+.result h3 {
+  margin: 0 0 12px;
+  color: #83b6ff;
+  font-size: 16px;
+}
+
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.result-row:last-child {
+  border-bottom: 0;
+}
+
+.result-row strong {
+  color: #a9caff;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #36d98a;
+}
+
+.info-value {
+  margin-top: 8px;
+  color: #a9caff;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+footer {
+  padding: 20px 15px 30px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+}
 </style>
 </head>
+
 <body>
+
 <header>
-  <div class="avatar" id="avatarBox" aria-label="Foto de perfil">
-    <span id="avatarFallback">HS</span>
-    <img id="avatarImage" alt="Foto de perfil" class="hidden">
-  </div>
-  <div class="logo">HEADSHOT SENSITIVITY</div>
-  <div class="subtitle">Central gamer • Sensibilidade e diagnóstico</div>
+  <h1>HEADSHOT <span>SENSITIVITY</span></h1>
+  <p>Configurações personalizadas para Free Fire</p>
 </header>
 
-<main class="wrap">
-  <nav class="tabs" aria-label="Abas do aplicativo">
-    <button type="button" class="tab active" data-tab="sensi">🎯 Sensibilidade</button>
-    <button type="button" class="tab" data-tab="diagnostico">📊 Diagnóstico</button>
-    <button type="button" class="tab" data-tab="perfil">👤 Perfil</button>
-  </nav>
+<nav aria-label="Menu principal">
+  <button type="button"
+    class="tab-button active"
+    data-tab="sensi"
+    aria-selected="true">
+    Sensibilidade
+  </button>
 
-  <section class="panel active" id="panel-sensi">
+  <button type="button"
+    class="tab-button"
+    data-tab="diagnostico"
+    aria-selected="false">
+    Diagnóstico
+  </button>
+
+  <button type="button"
+    class="tab-button"
+    data-tab="sobre"
+    aria-selected="false">
+    Sobre
+  </button>
+</nav>
+
+<main>
+
+  <section id="sensi" class="tab-content active">
+
     <div class="card">
       <h2>Gerador de sensibilidade</h2>
-      <p class="desc">Personalize uma configuração inicial para testar no Free Fire. Os valores são sugestões e podem precisar de ajustes no jogo.</p>
-      <div class="grid">
-        <div class="field">
-          <label for="brand">Marca do celular</label>
-          <select id="brand">
-            <option value="Samsung">Samsung</option>
-            <option value="Xiaomi">Xiaomi / Redmi / POCO</option>
-            <option value="Motorola">Motorola</option>
-            <option value="Apple">Apple</option>
-            <option value="Realme">Realme</option>
-            <option value="Infinix">Infinix</option>
-            <option value="Tecno">Tecno</option>
-            <option value="Oppo">OPPO</option>
-            <option value="Vivo">Vivo</option>
-            <option value="Outro">Outra marca</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="model">Modelo do celular</label>
-          <input id="model" type="text" maxlength="60" placeholder="Ex.: Galaxy A15">
-        </div>
-        <div class="field">
-          <label for="hz">Taxa de atualização</label>
-          <select id="hz">
-            <option value="60">60 Hz</option><option value="90">90 Hz</option>
-            <option value="120">120 Hz</option><option value="144">144 Hz</option>
-            <option value="165">165 Hz ou mais</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="fingers">Dedos usados</label>
-          <select id="fingers">
-            <option value="2">2 dedos</option><option value="3">3 dedos</option>
-            <option value="4">4 dedos</option><option value="5">5 dedos ou mais</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="style">Estilo de jogo</label>
-          <select id="style">
-            <option value="equilibrado">Equilibrado</option>
-            <option value="rush">Rush / agressivo</option>
-            <option value="precisao">Precisão / controle</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="aim">Precisão de mira</label>
-          <select id="aim">
-            <option value="padrao">Padrão</option>
-            <option value="preciso">Precisa na mira</option>
-            <option value="controle">Controle total</option>
-          </select>
-        </div>
+      <p>
+        Ajuste os controles conforme sua preferência e gere uma
+        sugestão inicial de sensibilidade. Os valores são sugestões
+        e não garantem tiros na cabeça.
+      </p>
+
+      <div class="field">
+        <label for="device">
+          Tipo de dispositivo
+        </label>
+        <select id="device">
+          <option value="balanced">Equilibrado</option>
+          <option value="fast">Resposta rápida</option>
+          <option value="controlled">Controle preciso</option>
+        </select>
       </div>
 
-      <h3>Escolha a arma para personalizar</h3>
-      <div class="weapon-grid" id="weaponGrid">
-        <button type="button" class="weapon active" data-weapon="Geral"><span>🎯</span>Geral</button>
-        <button type="button" class="weapon" data-weapon="MP40"><span>🔫</span>MP40</button>
-        <button type="button" class="weapon" data-weapon="UMP"><span>🔫</span>UMP</button>
-        <button type="button" class="weapon" data-weapon="M1887"><span>💥</span>M1887</button>
-        <button type="button" class="weapon" data-weapon="Desert Eagle"><span>🔫</span>Desert Eagle</button>
-        <button type="button" class="weapon" data-weapon="AWM"><span>🎯</span>AWM</button>
-        <button type="button" class="weapon" data-weapon="SCAR"><span>🔫</span>SCAR</button>
-        <button type="button" class="weapon" data-weapon="AK"><span>🔫</span>AK</button>
-        <button type="button" class="weapon" data-weapon="SKS"><span>🎯</span>SKS</button>
-        <button type="button" class="weapon" data-weapon="SKORPION"><span>🔫</span>Skorpion</button>
-        <button type="button" class="weapon" data-weapon="Groza"><span>🔫</span>Groza</button>
-        <button type="button" class="weapon" data-weapon="Outra arma"><span>＋</span>Outra arma</button>
+      <div class="field">
+        <label for="experience">
+          Experiência de jogo
+        </label>
+        <select id="experience">
+          <option value="beginner">Iniciante</option>
+          <option value="intermediate" selected>Intermediário</option>
+          <option value="advanced">Avançado</option>
+        </select>
       </div>
 
-      <div style="height:14px"></div>
-      <button type="button" class="btn" id="generateBtn">GERAR MINHA SENSIBILIDADE</button>
+      <div class="field">
+        <label for="screen">
+          Tamanho da tela
+          <output id="screenValue">Médio</output>
+        </label>
+        <input id="screen" type="range"
+          min="1" max="3" value="2">
+      </div>
 
-      <div id="result" class="hidden">
-        <h3 style="margin-top:18px">Sua configuração sugerida</h3>
-        <div class="result-grid">
-          <div class="stat"><div class="name">Geral</div><div class="value" id="vGeneral">—</div></div>
-          <div class="stat"><div class="name">Ponto vermelho</div><div class="value" id="vRedDot">—</div></div>
-          <div class="stat"><div class="name">Mira 2x</div><div class="value" id="v2x">—</div></div>
-          <div class="stat"><div class="name">Mira 4x</div><div class="value" id="v4x">—</div></div>
-          <div class="stat"><div class="name">Mira AWM</div><div class="value" id="vAwm">—</div></div>
-          <div class="stat"><div class="name">Olhadinha</div><div class="value" id="vLook">—</div></div>
+      <div class="field">
+        <label for="drag">
+          Velocidade de arrasto
+          <output id="dragValue">50</output>
+        </label>
+        <input id="drag" type="range"
+          min="1" max="100" value="50">
+      </div>
+
+      <div class="field">
+        <label for="precision">
+          Preferência por precisão
+          <output id="precisionValue">50</output>
+        </label>
+        <input id="precision" type="range"
+          min="1" max="100" value="50">
+      </div>
+
+      <button type="button" class="primary-button"
+        id="generateButton">
+        GERAR SENSIBILIDADE
+      </button>
+
+      <button type="button" class="secondary-button"
+        id="resetButton">
+        RESTAURAR AJUSTES
+      </button>
+
+      <div id="result" class="result" hidden>
+        <h3>Sensibilidade sugerida</h3>
+
+        <div class="result-row">
+          <span>Geral</span>
+          <strong id="generalResult">--</strong>
         </div>
-        <p class="note" id="resultNote"></p>
-        <button type="button" class="btn secondary" id="copyBtn">COPIAR CONFIGURAÇÃO</button>
-        <textarea id="copyFallback" class="hidden" rows="8" style="margin-top:10px;width:100%" aria-label="Configuração para copiar"></textarea>
+
+        <div class="result-row">
+          <span>Ponto vermelho</span>
+          <strong id="redResult">--</strong>
+        </div>
+
+        <div class="result-row">
+          <span>Mira 2x</span>
+          <strong id="scope2Result">--</strong>
+        </div>
+
+        <div class="result-row">
+          <span>Mira 4x</span>
+          <strong id="scope4Result">--</strong>
+        </div>
+
+        <div class="result-row">
+          <span>Mira AWM</span>
+          <strong id="awmResult">--</strong>
+        </div>
+
+        <div class="result-row">
+          <span>Olhadinha</span>
+          <strong id="lookResult">--</strong>
+        </div>
+
+        <button type="button" class="secondary-button"
+          id="copyButton">
+          COPIAR CONFIGURAÇÃO
+        </button>
+
+        <p id="copyStatus" role="status"></p>
       </div>
     </div>
+
   </section>
 
-  <section class="panel" id="panel-diagnostico">
+  <section id="diagnostico" class="tab-content">
+
     <div class="card">
       <h2>Diagnóstico do dispositivo</h2>
-      <p class="desc">Métricas retornadas pela integração Android. CPU e memória do aplicativo são estimativas do processo; FPS é da interface do app, não do Free Fire.</p>
-      <div class="status-line"><span id="connectionDot" class="dot"></span><span id="connectionStatus">Aguardando diagnóstico…</span></div>
-      <div class="metric"><div class="metric-top"><span>RAM total</span><strong id="totalRam">N/D</strong></div></div>
-      <div class="metric"><div class="metric-top"><span>RAM disponível</span><strong id="availableRam">N/D</strong></div></div>
-      <div class="metric">
-        <div class="metric-top"><span>RAM usada no sistema</span><strong id="usedRam">N/D</strong></div>
-        <div class="meter"><div id="ramMeter"></div></div>
-        <div class="metric-top" style="margin-top:7px"><span>Uso estimado de RAM</span><strong id="ramPercent">N/D</strong></div>
+      <p>
+        Esta seção verifica se a interface está funcionando.
+        As informações nativas do Android dependem da integração
+        configurada no aplicativo.
+      </p>
+
+      <div class="result-row">
+        <span>Interface HTML</span>
+        <strong id="htmlStatus">Funcionando</strong>
       </div>
-      <div class="metric"><div class="metric-top"><span>Memória do aplicativo</span><strong id="appRam">N/D</strong></div></div>
-      <div class="metric"><div class="metric-top"><span>CPU do aplicativo</span><strong id="cpuValue">N/D</strong></div><div class="meter"><div id="cpuMeter"></div></div></div>
-      <div class="metric"><div class="metric-top"><span>FPS da interface</span><strong id="fpsValue">N/D</strong></div></div>
-      <p class="note" id="lastUpdate">Última verificação: ainda não realizada.</p>
-      <button type="button" class="btn" id="refreshDiagnosticsBtn">ATUALIZAR DIAGNÓSTICO</button>
+
+      <div class="result-row">
+        <span>Integração Android</span>
+        <strong id="androidStatus">Não verificada</strong>
+      </div>
+
+      <div class="result-row">
+        <span>Memória RAM total</span>
+        <strong id="totalRam">N/D</strong>
+      </div>
+
+      <div class="result-row">
+        <span>RAM disponível</span>
+        <strong id="availableRam">N/D</strong>
+      </div>
+
+      <div class="result-row">
+        <span>RAM utilizada</span>
+        <strong id="usedRam">N/D</strong>
+      </div>
+
+      <div class="result-row">
+        <span>Memória do aplicativo</span>
+        <strong id="appRam">N/D</strong>
+      </div>
+
+      <div class="result-row">
+        <span>Uso de CPU</span>
+        <strong id="cpuValue">N/D</strong>
+      </div>
+
+      <div class="result-row">
+        <span>FPS do aplicativo</span>
+        <strong id="fpsValue">N/D</strong>
+      </div>
+
+      <div class="status">
+        <span class="status-dot"></span>
+        <span id="connectionStatus">Interface carregada</span>
+      </div>
+
+      <button type="button" class="primary-button"
+        id="diagnosticButton">
+        ATUALIZAR DIAGNÓSTICO
+      </button>
+
+      <p id="diagnosticMessage" role="status">
+        Pronto para verificar.
+      </p>
     </div>
+
   </section>
 
-  <section class="panel" id="panel-perfil">
+  <section id="sobre" class="tab-content">
+
     <div class="card">
-      <h2>Perfil do jogador</h2>
-      <p class="desc">Escolha uma imagem da galeria para usá-la como foto de perfil dentro do aplicativo.</p>
-      <div class="profile-row">
-        <div class="avatar"><span id="profileFallback">HS</span><img id="profilePreview" alt="Prévia da foto de perfil" class="hidden"></div>
-        <div style="flex:1;min-width:0">
-          <strong>Headshot Sensitivity</strong>
-          <p class="note" style="margin:5px 0 0">Sua foto aparece no cabeçalho do app.</p>
-        </div>
-      </div>
-      <div style="height:14px"></div>
-      <label for="profileFile">Selecionar foto da galeria</label>
-      <input type="file" id="profileFile" accept="image/*">
-      <div style="height:10px"></div>
-      <button type="button" class="btn secondary" id="removePhotoBtn">REMOVER FOTO</button>
-      <p class="note">Se o seletor de arquivo não abrir dentro do APK, será necessário implementar o seletor no MainActivity.java. O ícone de instalação do Android é configurado separadamente.</p>
+      <h2>Sobre o aplicativo</h2>
+      <p>
+        O Headshot Sensitivity é uma interface de apoio para
+        jogadores que desejam organizar e testar configurações
+        de sensibilidade no Free Fire.
+      </p>
+
+      <p>
+        As configurações geradas são sugestões iniciais. O
+        resultado depende do dispositivo, da configuração do
+        jogo, dos controles utilizados e da preferência pessoal.
+      </p>
+
+      <p>
+        O aplicativo não altera automaticamente as configurações
+        internas do Free Fire e não garante desempenho específico.
+      </p>
+
+      <div class="info-value">Headshot Sensitivity</div>
+      <p>Versão 1.0</p>
     </div>
+
   </section>
+
 </main>
 
-<footer>Headshot Sensitivity • Ferramenta de sugestões • Use os valores como ponto de partida</footer>
+<footer>
+  Headshot Sensitivity · Ferramenta de apoio para configurações
+</footer>
 
 <script>
-"use strict";
+(function () {
+  "use strict";
 
-const $ = (id) => document.getElementById(id);
-let selectedWeapon = "Geral";
+  function byId(id) {
+    return document.getElementById(id);
+  }
 
-function switchTab(name) {
-  document.querySelectorAll(".tab").forEach((button) => {
-    const active = button.dataset.tab === name;
-    button.classList.toggle("active", active);
-    button.setAttribute("aria-selected", active ? "true" : "false");
+  function setText(id, value) {
+    var element = byId(id);
+    if (element) {
+      element.textContent = String(value);
+    }
+  }
+
+  /* NAVEGAÇÃO ENTRE ABAS */
+
+  function openTab(tabName) {
+    var sections = document.querySelectorAll(".tab-content");
+    var buttons = document.querySelectorAll(".tab-button");
+    var found = false;
+    var i;
+
+    for (i = 0; i < sections.length; i++) {
+      var section = sections[i];
+      var active = section.id === tabName;
+      section.classList.toggle("active", active);
+      if (active) found = true;
+    }
+
+    for (i = 0; i < buttons.length; i++) {
+      var button = buttons[i];
+      var activeButton = button.getAttribute("data-tab") === tabName;
+      button.classList.toggle("active", activeButton);
+      button.setAttribute("aria-selected", activeButton ? "true" : "false");
+    }
+
+    return found;
+  }
+
+  var tabButtons = document.querySelectorAll(".tab-button");
+
+  for (var i = 0; i < tabButtons.length; i++) {
+    tabButtons[i].addEventListener("click", function () {
+      openTab(this.getAttribute("data-tab"));
+    });
+  }
+
+  /* ATUALIZAÇÃO DOS CONTROLES */
+
+  function updateControls() {
+    var screen = Number(byId("screen").value);
+    var drag = Number(byId("drag").value);
+    var precision = Number(byId("precision").value);
+
+    var screenNames = {
+      1: "Pequeno",
+      2: "Médio",
+      3: "Grande"
+    };
+
+    setText("screenValue", screenNames[screen] || "Médio");
+    setText("dragValue", drag);
+    setText("precisionValue", precision);
+  }
+
+  byId("screen").addEventListener("input", updateControls);
+  byId("drag").addEventListener("input", updateControls);
+  byId("precision").addEventListener("input", updateControls);
+
+  /* GERAÇÃO DE SENSIBILIDADE */
+
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, Math.round(value)));
+  }
+
+  function generateSensitivity() {
+    var drag = Number(byId("drag").value);
+    var precision = Number(byId("precision").value);
+    var screen = Number(byId("screen").value);
+    var device = byId("device").value;
+    var experience = byId("experience").value;
+
+    var base = 85 + (drag - 50) * 0.35;
+    base += (screen - 2) * 3;
+    base -= (precision - 50) * 0.15;
+
+    if (device === "fast") base += 5;
+    if (device === "controlled") base -= 6;
+
+    if (experience === "beginner") base -= 4;
+    if (experience === "advanced") base += 3;
+
+    var general = clamp(base, 0, 200);
+    var red = clamp(base - 5, 0, 200);
+    var scope2 = clamp(base - 12, 0, 200);
+    var scope4 = clamp(base - 20, 0, 200);
+    var awm = clamp(base - 35, 0, 200);
+    var look = clamp(base + 5, 0, 200);
+
+    setText("generalResult", general);
+    setText("redResult", red);
+    setText("scope2Result", scope2);
+    setText("scope4Result", scope4);
+    setText("awmResult", awm);
+    setText("lookResult", look);
+
+    byId("result").hidden = false;
+    setText("copyStatus", "");
+  }
+
+  byId("generateButton").addEventListener(
+    "click", generateSensitivity
+  );
+
+  /* RESTAURAR CONTROLES */
+
+  byId("resetButton").addEventListener("click", function () {
+    byId("device").value = "balanced";
+    byId("experience").value = "intermediate";
+    byId("screen").value = "2";
+    byId("drag").value = "50";
+    byId("precision").value = "50";
+
+    updateControls();
+    byId("result").hidden = true;
+    setText("copyStatus", "");
   });
 
-  document.querySelectorAll(".panel").forEach((panel) => {
-    panel.classList.toggle("active", panel.id === "panel-" + name);
+  /* COPIAR CONFIGURAÇÃO */
+
+  function getConfigurationText() {
+    return [
+      "Headshot Sensitivity",
+      "Geral: " + byId("generalResult").textContent,
+      "Ponto vermelho: " + byId("redResult").textContent,
+      "Mira 2x: " + byId("scope2Result").textContent,
+      "Mira 4x: " + byId("scope4Result").textContent,
+      "Mira AWM: " + byId("awmResult").textContent,
+      "Olhadinha: " + byId("lookResult").textContent
+    ].join("\n");
+  }
+
+  byId("copyButton").addEventListener("click", function () {
+    var text = getConfigurationText();
+
+    if (navigator.clipboard &&
+        typeof navigator.clipboard.writeText === "function") {
+      navigator.clipboard.writeText(text).then(function () {
+        setText("copyStatus", "Configuração copiada.");
+      }).catch(function () {
+        fallbackCopy(text);
+      });
+    } else {
+      fallbackCopy(text);
+    }
   });
 
-  if (name === "diagnostico") refreshDiagnostics();
-}
-
-document.querySelectorAll(".tab").forEach((button) => {
-  button.addEventListener("click", () => switchTab(button.dataset.tab));
-});
-
-document.querySelectorAll(".weapon").forEach((button) => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".weapon").forEach((item) => item.classList.remove("active"));
-    button.classList.add("active");
-    selectedWeapon = button.dataset.weapon;
-  });
-});
-
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, Math.round(value)));
-}
-
-function generateSensitivity() {
-  const hz = Number($("hz").value) || 60;
-  const fingers = Number($("fingers").value) || 2;
-  const style = $("style").value;
-  const aim = $("aim").value;
-  const brand = $("brand").value;
-  const model = $("model").value.trim();
-
-  let base = 88 + (hz - 60) * 0.08 + (fingers - 2) * 1.5;
-  if (style === "rush") base += 4;
-  if (style === "precisao") base -= 5;
-  if (aim === "preciso") base -= 3;
-  if (aim === "controle") base -= 6;
-  if (brand === "Apple") base -= 1;
-  if (brand === "Xiaomi") base += 1;
-
-  const adjustments = {
-    "Geral": 0, "MP40": 4, "UMP": 1, "M1887": 3,
-    "Desert Eagle": -2, "AWM": -12, "SCAR": -1, "AK": -3,
-    "SKS": -8, "SKORPION": 3, "Groza": -1, "Outra arma": 0
-  };
-
-  const general = clamp(base + (adjustments[selectedWeapon] || 0), 0, 200);
-  const values = {
-    vGeneral: general,
-    vRedDot: clamp(general - 5, 0, 200),
-    v2x: clamp(general - 12, 0, 200),
-    v4x: clamp(general - 20, 0, 200),
-    vAwm: clamp(general - 32, 0, 200),
-    vLook: clamp(general - 2, 0, 200)
-  };
-
-  Object.entries(values).forEach(([id, value]) => { $(id).textContent = value; });
-
-  $("resultNote").textContent =
-    "Perfil: " + (model || "modelo não informado") + " • " + brand +
-    " • " + hz + " Hz • " + fingers + " dedos • Arma: " + selectedWeapon +
-    ". Sugestão experimental: teste no treinamento e ajuste conforme seu controle.";
-
-  $("result").classList.remove("hidden");
-}
-
-$("generateBtn").addEventListener("click", generateSensitivity);
-
-function getConfigurationText() {
-  return [
-    "HEADSHOT SENSITIVITY",
-    "Marca: " + $("brand").value,
-    "Modelo: " + ($("model").value.trim() || "Não informado"),
-    "Arma: " + selectedWeapon,
-    "Geral: " + $("vGeneral").textContent,
-    "Ponto vermelho: " + $("vRedDot").textContent,
-    "Mira 2x: " + $("v2x").textContent,
-    "Mira 4x: " + $("v4x").textContent,
-    "Mira AWM: " + $("vAwm").textContent,
-    "Olhadinha: " + $("vLook").textContent,
-    "Observação: valores sugeridos; ajuste no jogo."
-  ].join("\n");
-}
-
-$("copyBtn").addEventListener("click", async () => {
-  const text = getConfigurationText();
-
-  try {
-    if (!navigator.clipboard || !window.isSecureContext) throw new Error("Clipboard indisponível");
-    await navigator.clipboard.writeText(text);
-    alert("Configuração copiada!");
-  } catch (error) {
-    const area = $("copyFallback");
+  function fallbackCopy(text) {
+    var area = document.createElement("textarea");
     area.value = text;
-    area.classList.remove("hidden");
-    area.focus();
+    area.setAttribute("readonly", "");
+    area.style.position = "fixed";
+    area.style.left = "-9999px";
+
+    document.body.appendChild(area);
     area.select();
 
-    let copied = false;
-    try { copied = document.execCommand("copy"); } catch (_) {}
-    alert(copied ? "Configuração copiada!" : "Selecione o texto exibido e copie.");
-  }
-});
-
-function setConnection(status, type) {
-  $("connectionStatus").textContent = status;
-  $("connectionDot").className = "dot" + (type ? " " + type : "");
-}
-
-function setDiagnostic(id, value) {
-  const element = $(id);
-  if (element) element.textContent = value;
-}
-
-function refreshDiagnostics() {
-  try {
-    const bridge = window.AndroidDiagnostics;
-
-    if (!bridge || typeof bridge.getDiagnostics !== "function") {
-      throw new Error("Integração Android indisponível. Verifique se o APK novo foi instalado.");
-    }
-
-    let data = bridge.getDiagnostics();
-    if (typeof data === "string") data = JSON.parse(data);
-    if (!data || data.error) throw new Error(data && data.error ? data.error : "Retorno inválido");
-
-    applyNativeDiagnostics(data);
-  } catch (error) {
-    console.warn("Diagnóstico:", error);
-    setConnection("Diagnóstico indisponível", "error");
-
-    ["totalRam", "availableRam", "usedRam", "appRam", "cpuValue", "fpsValue"].forEach((id) => {
-      setDiagnostic(id, "N/D");
-    });
-
-    setDiagnostic("ramPercent", "Indisponível");
-    $("ramMeter").style.width = "0%";
-    $("cpuMeter").style.width = "0%";
-    setDiagnostic("lastUpdate", error.message || "Falha ao consultar diagnóstico.");
-  }
-}
-
-function applyNativeDiagnostics(data) {
-  const total = Number(data.totalRamMB);
-  const available = Number(data.availableRamMB);
-  const used = Number(data.usedRamMB);
-  const appRam = Number(data.appMemoryMB);
-  const cpu = Number(data.cpuPercent);
-  const fps = Number(data.fpsApp);
-
-  setConnection("Diagnóstico Android conectado", "success");
-  setDiagnostic("totalRam", Number.isFinite(total) ? total.toLocaleString("pt-BR") + " MB" : "N/D");
-  setDiagnostic("availableRam", Number.isFinite(available) ? available.toLocaleString("pt-BR") + " MB" : "N/D");
-  setDiagnostic("usedRam", Number.isFinite(used) ? used.toLocaleString("pt-BR") + " MB" : "N/D");
-  setDiagnostic("appRam", Number.isFinite(appRam) ? appRam.toLocaleString("pt-BR") + " MB" : "N/D");
-  setDiagnostic("cpuValue", Number.isFinite(cpu) ? cpu.toLocaleString("pt-BR", {maximumFractionDigits:1}) + "%" : "N/D");
-  setDiagnostic("fpsValue", Number.isFinite(fps) ? fps + " FPS" : "N/D");
-
-  if (Number.isFinite(total) && total > 0 && Number.isFinite(used)) {
-    const percent = Math.max(0, Math.min(100, used / total * 100));
-    setDiagnostic("ramPercent", percent.toLocaleString("pt-BR", {maximumFractionDigits:1}) + "%");
-    $("ramMeter").style.width = percent + "%";
-  } else {
-    setDiagnostic("ramPercent", "N/D");1
-    $("ramMeter").style.width = "0%";
-  }a
-
-  $("cpuMeter").style.width =
-    (Number.isFinite(cpu) ? Math.max(0, Math.min(100, cpu)) : 0) + "%";
-
-  setDiagnostic("lastUpdate", "Última verificação: " + new Date().toLocaleTimeString("pt-BR"));
-}
-
-$("refreshDiagnosticsBtn").addEventListener("click", refreshDiagnostics);
-
-functionq loadProfilePhoto(dataUrl) {
-const headerImage = $("avatarImage");
-  const headerFallback = $("avatarFallback");
-  const preview = $("profilePreview");
-  const profileFallback = $("profileFallback");
-
-  if (dataUrl) {
-    headerImage.src = dataUrl;
-    headerImage.classList.remove("hidden");
-    headerFallback.classList.add("hidden");
-    preview.src = dataUrl;
-    preview.classList.remove("hidden");
-    profileFallback.classList.add("hidden");
-  } else {
-    headerImage.removeAttribute("src");
-    headerImage.classList.add("hidden");
-    headerFallback.classList.remove("hidden");
-    preview.removeAttribute("src");
-    preview.classList.add("hidden");
-    profileFallback.classList.remove("hidden");
-  }
-}
-
-try {
-  const savedPhoto = localStorage.getItem("hs_profile_photo");
-  if (savedPhoto) loadProfilePhoto(savedPhoto);
-} catch (_) {}
-
-$("profileFile").addEventListener("change", (event) => {
-  const file = event.target.files && event.target.files[0];
-  if (!file) return;
-
-  if (!file.type.startsWith("image/")) {
-    alert("Escolha um arquivo de imagem.");
-    return;
-  }
-
-  if (file.size > 4 * 1024 * 1024) {
-    alert("Escolha uma imagem de até 4 MB.");
-    return;
-  }
-
-  const reader = new FileReader();
-
-  reader.onload = () => {
-    const dataUrl = String(reader.result || "");
-    loadProfilePhoto(dataUrl);
+    var copied = false;
 
     try {
-      localStorage.setItem("hs_profile_photo", dataUrl);
-    } catch (_) {
-      alert("A foto apareceu, mas não foi possível guardá-la permanentemente.");
+      copied = document.execCommand("copy");
+    } catch (error) {
+      copied = false;
     }
-  };
 
-  reader.onerror = () => alert("Não foi possível ler essa imagem.");
-  reader.readAsDataURL(file);
-});
+    document.body.removeChild(area);
 
-$("removePhotoBtn").addEventListener("click", () => {
-  try { localStorage.removeItem("hs_profile_photo"); } catch (_) {}
-  $("profileFile").value = "";
-  loadProfilePhoto("");
-});
+    setText(
+      "copyStatus",
+      copied
+        ? "Configuração copiada."
+        : "Não foi possível copiar automaticamente. Selecione e copie os valores."
+    );
+  }
 
-setConnection("Aguardando abertura da aba Diagnóstico", "");
+  /* DIAGNÓSTICO */
+
+  function showUnavailableDiagnostic() {
+    setText("androidStatus", "Não disponível");
+    setText("totalRam", "N/D");
+    setText("availableRam", "N/D");
+    setText("usedRam", "N/D");
+    setText("appRam", "N/D");
+    setText("cpuValue", "N/D");
+    setText("fpsValue", "N/D");
+    setText("connectionStatus", "HTML funcionando");
+    setText(
+      "diagnosticMessage",
+      "A interface funciona, mas a integração Android não foi encontrada."
+    );
+  }
+
+  function applyDiagnostic(data) {
+    if (typeof data === "string") {
+      data = JSON.parse(data);
+    }
+
+    if (!data || typeof data !== "object") {
+      throw new Error("Resposta inválida");
+    }
+
+    if (data.error) {
+      setText("androidStatus", "Erro no diagnóstico");
+      setText("diagnosticMessage", String(data.error));
+      return;
+    }
+
+    setText("androidStatus", "Conectado");
+    setText("totalRam", data.totalRamMB != null ? data.totalRamMB + " MB" : "N/D");
+    setText("availableRam", data.availableRamMB != null ? data.availableRamMB + " MB" : "N/D");
+    setText("usedRam", data.usedRamMB != null ? data.usedRamMB + " MB" : "N/D");
+    setText("appRam", data.appMemoryMB != null ? data.appMemoryMB + " MB" : "N/D");
+    setText("cpuValue", data.cpuPercent != null ? data.cpuPercent + "%" : "N/D");
+    setText("fpsValue", data.fpsApp != null ? data.fpsApp : "N/D");
+    setText("connectionStatus", "Integração Android disponível");
+    setText("diagnosticMessage", "Diagnóstico atualizado.");
+  }
+
+  function updateDiagnostic() {
+    setText("htmlStatus", "Funcionando");
+    setText("diagnosticMessage", "Verificando integração Android...");
+
+    try {
+      if (!window.AndroidDiagnostics ||
+          typeof window.AndroidDiagnostics.getDiagnostics !== "function") {
+        showUnavailableDiagnostic();
+        return;
+      }
+
+      var data = window.AndroidDiagnostics.getDiagnostics();
+
+      /* Compatível com retorno direto e com Promise de integrações nativas. */
+      if (data && typeof data.then === "function") {
+        data.then(applyDiagnostic).catch(function () {
+          setText("androidStatus", "Falha na leitura");
+          setText(
+            "diagnosticMessage",
+            "Não foi possível ler os dados Android. Verifique a integração nativa."
+          );
+        });
+      } else {
+        applyDiagnostic(data);
+      }
+    } catch (error) {
+      setText("androidStatus", "Falha na leitura");
+      setText(
+        "diagnosticMessage",
+        "Não foi possível ler os dados Android. Verifique a integração nativa."
+      );
+    }
+  }
+
+  byId("diagnosticButton").addEventListener(
+    "click", updateDiagnostic
+  );
+
+  /* INICIALIZAÇÃO */
+
+  updateControls();
+  openTab("sensi");
+
+  setText("htmlStatus", "Funcionando");
+  setText("androidStatus", "Não verificada");
+})();
 </script>
+
 </body>
 </html>
-
-
