@@ -1,4 +1,3 @@
-
 name: Build Headshot Sensitivity APK
 
 on:
@@ -15,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Preparar Java
+      - name: Baixar código do repositório
         uses: actions/checkout@v4
 
       - name: Configurar JDK
@@ -31,9 +30,10 @@ jobs:
 
       - name: Preparar Android SDK
         uses: android-actions/setup-android@v3
-
-      - name: Instalar componentes Android
-        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+        with:
+          accept-android-sdk-licenses: 'true'
+          log-accepted-android-sdk-licenses: 'false'
+          packages: 'platforms;android-35 build-tools;35.0.0'
 
       - name: Criar projeto Android
         shell: bash
@@ -50,6 +50,7 @@ jobs:
                   gradlePluginPortal()
               }
           }
+
           dependencyResolutionManagement {
               repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
               repositories {
@@ -57,6 +58,7 @@ jobs:
                   mavenCentral()
               }
           }
+
           rootProject.name = "HeadshotSensitivity"
           include(":app")
           EOF
@@ -89,16 +91,20 @@ jobs:
           cat > app/src/main/AndroidManifest.xml <<'EOF'
           <manifest xmlns:android="http://schemas.android.com/apk/res/android">
               <uses-permission android:name="android.permission.INTERNET"/>
+
               <application
                   android:label="Headshot Sensitivity"
                   android:theme="@android:style/Theme.Material.NoActionBar">
+
                   <activity
                       android:name=".MainActivity"
                       android:exported="true">
+
                       <intent-filter>
                           <action android:name="android.intent.action.MAIN"/>
                           <category android:name="android.intent.category.LAUNCHER"/>
                       </intent-filter>
+
                   </activity>
               </application>
           </manifest>
@@ -114,19 +120,22 @@ jobs:
           import android.webkit.WebSettings;
 
           public class MainActivity extends Activity {
+
               @Override
               protected void onCreate(Bundle state) {
                   super.onCreate(state);
 
                   WebView web = new WebView(this);
+
                   WebSettings settings = web.getSettings();
                   settings.setJavaScriptEnabled(true);
                   settings.setDomStorageEnabled(true);
+
                   web.setWebViewClient(new WebViewClient());
                   setContentView(web);
 
                   web.loadUrl(
-                    "https://cristianalmeida34rt-del.github.io/headshot-sensitivity/"
+                      "https://cristianalmeida34rt-del.github.io/headshot-sensitivity/"
                   );
               }
           }
@@ -140,5 +149,4 @@ jobs:
         with:
           name: Headshot-Sensitivity-APK
           path: android-wrapper/app/build/outputs/apk/debug/app-debug.apk
-          if-no-files-found: error
-          
+          if-no-files-found: errora
