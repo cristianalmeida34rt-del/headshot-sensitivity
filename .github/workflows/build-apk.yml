@@ -42,6 +42,19 @@ jobs:
           mkdir -p app/src/main/assets
           cp index.html app/src/main/assets/index.html
 
+      - name: Verificar certificado de depuracao
+        run: |
+          mkdir -p "$HOME/.android"
+          if [ -f "$HOME/.android/debug.keystore" ]; then
+            keytool -list -v \
+              -keystore "$HOME/.android/debug.keystore" \
+              -alias androiddebugkey \
+              -storepass android \
+              -keypass android
+          else
+            echo "Nenhuma chave de depuracao preexistente encontrada."
+          fi
+          
       - name: Compilar APK
         run: gradle --no-daemon assembleDebug
 
