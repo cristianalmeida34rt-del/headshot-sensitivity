@@ -1,0 +1,293 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080812">
+  <title>Headshot Sensitivity</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #080812;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      padding: 24px 18px;
+      text-align: center;
+      background: linear-gradient(135deg, #10102a, #19103b);
+      border-bottom: 1px solid #633cff;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .logo span { color: #8b5cff; }
+
+    header p {
+      color: #aaa8c9;
+      font-size: 13px;
+    }
+
+    main {
+      width: min(100% - 28px, 500px);
+      margin: 25px auto;
+    }
+
+    .card {
+      background: #11111f;
+      border: 1px solid #292744;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 17px;
+      box-shadow: 0 8px 30px #0005;
+    }
+
+    h2 {
+      font-size: 18px;
+      margin: 0 0 18px;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 8px;
+      color: #c8c5e5;
+      font-size: 13px;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 13px;
+      color: white;
+      background: #090916;
+      border: 1px solid #393456;
+      border-radius: 10px;
+      outline: none;
+      font-size: 15px;
+    }
+
+    select:focus, input:focus {
+      border-color: #8054ff;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      border: 0;
+      border-radius: 11px;
+      margin-top: 18px;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      background: linear-gradient(100deg, #4934ff, #9a38ff);
+      cursor: pointer;
+    }
+
+    button:active { transform: scale(.98); }
+
+    .result {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .stat {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 0;
+      border-bottom: 1px solid #292744;
+    }
+
+    .stat span { color: #bbb8d7; }
+    .stat strong { color: #9c80ff; font-size: 20px; }
+
+    .note {
+      color: #9996b8;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #77748f;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">HEADSHOT <span>SENSITIVITY</span></div>
+  <p>Seu jogo. Sua configuração. Seu estilo.</p>
+</header>
+
+<main>
+  <section class="card">
+    <h2>⚡ Gerador de Sensibilidade</h2>
+
+    <label for="brand">Marca do celular</label>
+    <select id="brand">
+      <option>Xiaomi / Redmi / POCO</option>
+      <option>Samsung</option>
+      <option>Motorola</option>
+      <option>Realme</option>
+      <option>Infinix</option>
+      <option>TECNO</option>
+      <option>Apple iPhone</option>
+      <option>Outra marca</option>
+    </select>
+
+    <label for="model">Modelo do celular</label>
+    <input id="model" placeholder="Ex.: Redmi Note 14 4G">
+
+    <label for="style">Estilo de jogo</label>
+    <select id="style">
+      <option value="balanced">Equilibrado</option>
+      <option value="rush">Agressivo / Rush</option>
+      <option value="precision">Precisão</option>
+    </select>
+
+    <label for="screen">Taxa de atualização da tela</label>
+    <select id="screen">
+      <option value="60">60 Hz</option>
+      <option value="90">90 Hz</option>
+      <option value="120">120 Hz</option>
+      <option value="144">144 Hz</option>
+      <option value="unknown">Não sei</option>
+    </select>
+
+    <label for="control">Estilo de controle</label>
+    <select id="control">
+      <option value="2">2 dedos</option>
+      <option value="3">3 dedos</option>
+      <option value="4">4 dedos</option>
+      <option value="5">5 dedos ou mais</option>
+    </select>
+
+    <button onclick="generate()">GERAR MINHA SENSIBILIDADE</button>
+
+    <div class="result" id="result">
+      <h2>🎯 Sua configuração</h2>
+      <div id="stats"></div>
+      <button onclick="copyResult()">COPIAR CONFIGURAÇÃO</button>
+      <p class="note">
+        Estes valores são sugestões iniciais geradas pelo aplicativo.
+        Teste no campo de treinamento e ajuste conforme sua preferência.
+        O aplicativo não altera as configurações do Free Fire automaticamente.
+      </p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>💎 Sobre o aplicativo</h2>
+    <p class="note">
+      O Headshot Sensitivity ajuda você a criar sugestões de sensibilidade
+      para experimentar no Free Fire. As configurações são geradas no próprio
+      aparelho, sem exigir uma conta ou enviar seus dados para um servidor.
+    </p>
+  </section>
+</main>
+
+<footer>HEADSHOT SENSITIVITY · VERSÃO 1.0</footer>
+
+<script>
+  function generate() {
+    const brand = document.getElementById("brand").value;
+    const model = document.getElementById("model").value.trim();
+    const style = document.getElementById("style").value;
+    const screen = document.getElementById("screen").value;
+    const fingers = Number(document.getElementById("control").value);
+
+    const profiles = {
+      balanced: [175, 165, 150, 135, 95],
+      rush: [190, 180, 165, 145, 105],
+      precision: [160, 150, 135, 120, 85]
+    };
+
+    const base = profiles[style];
+    let adjustment = 0;
+
+    if (screen === "90") adjustment = 2;
+    if (screen === "120") adjustment = 4;
+    if (screen === "144") adjustment = 5;
+    if (fingers >= 4) adjustment += 2;
+    if (fingers === 2) adjustment -= 2;
+
+    const values = base.map(v =>
+      Math.max(0, Math.min(200, v + adjustment))
+    );
+
+    const names = [
+      "Geral",
+      "Ponto vermelho",
+      "Mira 2x",
+      "Mira 4x",
+      "Mira AWM"
+    ];
+
+    let output = "";
+    names.forEach((name, i) => {
+      output += '<div class="stat"><span>' + name +
+        '</span><strong>' + values[i] + '</strong></div>';
+    });
+
+    output += '<div class="stat"><span>Olhadinha</span><strong>' +
+      Math.min(200, values[0] + 5) + '</strong></div>';
+
+    document.getElementById("stats").innerHTML = output;
+    document.getElementById("result").style.display = "block";
+
+    window.lastConfig =
+      "HEADSHOT SENSITIVITY\n" +
+      "Marca: " + brand + "\n" +
+      "Modelo: " + (model || "Não informado") + "\n" +
+      names.map((n, i) => n + ": " + values[i]).join("\n") +
+      "\nOlhadinha: " + Math.min(200, values[0] + 5);
+
+    document.getElementById("result").scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+
+  function copyResult() {
+    const text = window.lastConfig || "";
+    if (!text) return;
+
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text)
+        .then(() => alert("Configuração copiada!"))
+        .catch(() => fallbackCopy(text));
+    } else {
+      fallbackCopy(text);
+    }
+  }
+
+  function fallbackCopy(text) {
+    const area = document.createElement("textarea");
+    area.value = text;
+    document.body.appendChild(area);
+    area.select();
+
+    try {
+      document.execCommand("copy");
+      alert("Configuração copiada!");
+    } catch (e) {
+      alert("Não foi possível copiar. Tente novamente.");
+    }
+
+    area.remove();
+  }
+</script>
+
+</body>
+</html>
