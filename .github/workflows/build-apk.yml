@@ -1,0 +1,144 @@
+
+name: Build Headshot Sensitivity APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/build-apk.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Preparar Java
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Instalar Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Preparar Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Instalar componentes Android
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Criar projeto Android
+        shell: bash
+        run: |
+          mkdir -p android-wrapper/app/src/main/java/com/zenyx/headshotsensitivity
+
+          cd android-wrapper
+
+          cat > settings.gradle <<'EOF'
+          pluginManagement {
+              repositories {
+                  google()
+                  mavenCentral()
+                  gradlePluginPortal()
+              }
+          }
+          dependencyResolutionManagement {
+              repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+          }
+          rootProject.name = "HeadshotSensitivity"
+          include(":app")
+          EOF
+
+          cat > build.gradle <<'EOF'
+          plugins {
+              id 'com.android.application' version '8.7.3' apply false
+          }
+          EOF
+
+          cat > app/build.gradle <<'EOF'
+          plugins {
+              id 'com.android.application'
+          }
+
+          android {
+              namespace 'com.zenyx.headshotsensitivity'
+              compileSdk 35
+
+              defaultConfig {
+                  applicationId 'com.zenyx.headshotsensitivity'
+                  minSdk 23
+                  targetSdk 35
+                  versionCode 1
+                  versionName '1.0'
+              }
+          }
+          EOF
+
+          cat > app/src/main/AndroidManifest.xml <<'EOF'
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+              <uses-permission android:name="android.permission.INTERNET"/>
+              <application
+                  android:label="Headshot Sensitivity"
+                  android:theme="@android:style/Theme.Material.NoActionBar">
+                  <activity
+                      android:name=".MainActivity"
+                      android:exported="true">
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN"/>
+                          <category android:name="android.intent.category.LAUNCHER"/>
+                      </intent-filter>
+                  </activity>
+              </application>
+          </manifest>
+          EOF
+
+          cat > app/src/main/java/com/zenyx/headshotsensitivity/MainActivity.java <<'EOF'
+          package com.zenyx.headshotsensitivity;
+
+          import android.app.Activity;
+          import android.os.Bundle;
+          import android.webkit.WebView;
+          import android.webkit.WebViewClient;
+          import android.webkit.WebSettings;
+
+          public class MainActivity extends Activity {
+              @Override
+              protected void onCreate(Bundle state) {
+                  super.onCreate(state);
+
+                  WebView web = new WebView(this);
+                  WebSettings settings = web.getSettings();
+                  settings.setJavaScriptEnabled(true);
+                  settings.setDomStorageEnabled(true);
+                  web.setWebViewClient(new WebViewClient());
+                  setContentView(web);
+
+                  web.loadUrl(
+                    "https://cristianalmeida34rt-del.github.io/headshot-sensitivity/"
+                  );
+              }
+          }
+          EOF
+
+      - name: Compilar APK
+        run: gradle -p android-wrapper assembleDebug
+
+      - name: Disponibilizar APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Headshot-Sensitivity-APK
+          path: android-wrapper/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          
