@@ -391,9 +391,9 @@ function applyNativeDiagnostics(data) {
     setDiagnostic("ramPercent", percent.toLocaleString("pt-BR", {maximumFractionDigits:1}) + "%");
     $("ramMeter").style.width = percent + "%";
   } else {
-    setDiagnostic("ramPercent", "N/D");
+    setDiagnostic("ramPercent", "N/D");1
     $("ramMeter").style.width = "0%";
-  }
+  }a
 
   $("cpuMeter").style.width =
     (Number.isFinite(cpu) ? Math.max(0, Math.min(100, cpu)) : 0) + "%";
@@ -403,5 +403,74 @@ function applyNativeDiagnostics(data) {
 
 $("refreshDiagnosticsBtn").addEventListener("click", refreshDiagnostics);
 
-function loadProfilePhoto(dataUrl) {
-  const header
+functionq loadProfilePhoto(dataUrl) {
+const headerImage = $("avatarImage");
+  const headerFallback = $("avatarFallback");
+  const preview = $("profilePreview");
+  const profileFallback = $("profileFallback");
+
+  if (dataUrl) {
+    headerImage.src = dataUrl;
+    headerImage.classList.remove("hidden");
+    headerFallback.classList.add("hidden");
+    preview.src = dataUrl;
+    preview.classList.remove("hidden");
+    profileFallback.classList.add("hidden");
+  } else {
+    headerImage.removeAttribute("src");
+    headerImage.classList.add("hidden");
+    headerFallback.classList.remove("hidden");
+    preview.removeAttribute("src");
+    preview.classList.add("hidden");
+    profileFallback.classList.remove("hidden");
+  }
+}
+
+try {
+  const savedPhoto = localStorage.getItem("hs_profile_photo");
+  if (savedPhoto) loadProfilePhoto(savedPhoto);
+} catch (_) {}
+
+$("profileFile").addEventListener("change", (event) => {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    alert("Escolha um arquivo de imagem.");
+    return;
+  }
+
+  if (file.size > 4 * 1024 * 1024) {
+    alert("Escolha uma imagem de até 4 MB.");
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    const dataUrl = String(reader.result || "");
+    loadProfilePhoto(dataUrl);
+
+    try {
+      localStorage.setItem("hs_profile_photo", dataUrl);
+    } catch (_) {
+      alert("A foto apareceu, mas não foi possível guardá-la permanentemente.");
+    }
+  };
+
+  reader.onerror = () => alert("Não foi possível ler essa imagem.");
+  reader.readAsDataURL(file);
+});
+
+$("removePhotoBtn").addEventListener("click", () => {
+  try { localStorage.removeItem("hs_profile_photo"); } catch (_) {}
+  $("profileFile").value = "";
+  loadProfilePhoto("");
+});
+
+setConnection("Aguardando abertura da aba Diagnóstico", "");
+</script>
+</body>
+</html>
+
+
