@@ -175,6 +175,9 @@ async function checkForUpdates() {
   const notice=document.getElementById("updateNotice");
   try {
     const response=await fetch(VERSION_URL+"?t="+Date.now(),{cache:"no-store"});
+    
+    alert("Resposta do servidor: " + response.status);
+    
     if(!response.ok)throw new Error("Arquivo de versão indisponível");
     const data=await response.json();
     if(!data.version||!/^\d+(\.\d+)*$/.test(String(data.version)))throw new Error("Versão inválida");
